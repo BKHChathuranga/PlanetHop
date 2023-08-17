@@ -2,10 +2,17 @@ const User = require('../models/user');
 const response = require('../utils/response');
 const bcrypt = require('bcrypt');
 const logger = require('../utils/logger');
+const { emailValidator, passwordValidator, phoneNumberValidator } = require('../utils/validation');
 
 exports.register = async (req, res) => {
     try {
         const { firstName, lastName, npi, email, password, phoneNumber } = req.body;
+
+        if(emailValidator(email) === false || passwordValidator(password) === false || (phoneNumber && phoneNumberValidator(phoneNumber) === false)) {
+            logger.warn('Invalid email, password or phone number');
+            return response.response(res, 'Invalid email, password or phone number', null, 400);
+        }
+
         const existingUser = await User.findOne({ $or: [{ npi }, { email }] });
 
         if (existingUser) {
