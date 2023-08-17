@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
         await newUser.save();
         
         logger.info('User registered successfully');
-        return response.response(res, 'User registered successfully', null, 201);
+        return response.response(res, 'User registered successfully', newUser, 201);
     } catch (error) {
         logger.error("Error while registering user", error.message);
         return response.response(res, error.message);

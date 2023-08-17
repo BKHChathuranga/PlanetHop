@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const logger = require('./utils/logger');
+const router = require('./routes');
 
 const app = express();
 require('dotenv').config();
+
 const port = parseInt(process.env.PORT);
 mongoose.set("strictQuery", false);
 
@@ -30,6 +32,9 @@ app.get('/', (req, res) => {
         message: 'Welcome to PlanetHop'
     });
 });
+
+//Routes
+app.use('/planetHop', router);
 
 app.listen(port, () => {
     logger.info(`Server running on port: ${port}`);
