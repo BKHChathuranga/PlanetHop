@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
 
-const transportationModeSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Name is required']
+const transportationMode = new mongoose.Schema({
+    name : {
+        type: String
     },
-    noOfSheets: {
-        type: Number,
-        required: [true, 'Number of sheets is required']
+
+    pricePerKm : {
+        type: Number
     },
-    pricePerKm: {
-        type: String,
-        required: [true, 'Price per Km is required']
+
+    numOfSheets : {
+        type: String
     }
+
+
 });
 
-module.exports = mongoose.model('TransportationMode', transportationModeSchema);
+module.exports = mongoose.model('TransportationMode', transportationMode);

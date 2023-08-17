@@ -2,7 +2,7 @@ const app = require('express');
 const router = app.Router();
 
 const userRoutes = require('./userRoutes');
-const transportationModeRoutes = require('./transportation-modeRoutes');
+const transportationModeRoutes = require('./transportationModeRoutes');
 const locationRoutes = require('./locationRoutes');
 
 router.use('/planetHop-user', userRoutes);
