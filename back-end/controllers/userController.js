@@ -1,12 +1,20 @@
-const User = require("../models/user");
-const response = require("../utils/response");
-const bcrypt = require("bcrypt");
-const logger = require("../utils/logger");
+const User = require('../models/user');
+const response = require('../utils/response');
+const bcrypt = require('bcrypt');
+const logger = require('../utils/logger');
+const { emailValidator, passwordValidator, phoneNumberValidator } = require('../utils/validation');
+const { generateTokens } = require('../utils/tokenGenerate');
 
 exports.register = async (req, res) => {
-  try {
-    const { firstName, lastName, npi, email, password, phoneNumber } = req.body;
-    const existingUser = await User.findOne({ $or: [{ npi }, { email }] });
+    try {
+        const { firstName, lastName, npi, email, password, phoneNumber } = req.body;
+
+        if(emailValidator(email) === false || passwordValidator(password) === false || (phoneNumber && phoneNumberValidator(phoneNumber) === false)) {
+            logger.warn('Invalid email, password or phone number');
+            return response.response(res, 'Invalid email, password or phone number', null, 400);
+        }
+
+        const existingUser = await User.findOne({ $or: [{ npi }, { email }] });
 
     if (existingUser) {
       logger.warn("NPI or email already exists");
@@ -51,8 +59,13 @@ exports.userLogin = async ({ body: { email, password } }, res) => {
       logger.warn("Password is Incorrect");
       return response.response(res, "Password is Incorrect", null, 400);
     }
+    const { accessToken, refreshToken } = await generateTokens(res, user);
+
+    res.header("acceses-token", accessToken);
+    res.header("refresh-token", refreshToken);
 
     return response.response(res, "User found", null, 200);
+
   } catch (error) {
     logger.error("Error while logging in user", error.message);
     return response.response(res, error.message, null, 400);
