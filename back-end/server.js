@@ -1,8 +1,9 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { dbConnect } = require("./dbConnect");
+const { dbConnect } = require("./config/dbConnection");
+const router = require("./routes");
+const logger = require("./utils/logger");
 
 const app = express();
 require("dotenv").config();
@@ -23,6 +24,9 @@ app.get("/", (req, res) => {
   });
 });
 
+//Routes
+app.use('/planetHop', router);
+
 app.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
+    logger.info(`Server running on port: ${port}`);
 });

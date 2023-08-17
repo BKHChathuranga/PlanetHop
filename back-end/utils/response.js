@@ -1,6 +1,6 @@
-exports.response = (res, msg, data) => {
+exports.response = (res, msg, data, status) => {
     return res.status(200).json({
-        status: 200,
+        status: status,
         message: msg,
         data: data
     });
