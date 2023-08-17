@@ -37,6 +37,6 @@ exports.register = async (req, res) => {
         return response.response(res, 'User registered successfully', newUser, 201);
     } catch (error) {
         logger.error("Error while registering user", error.message);
-        return response.response(res, error.message);
+        return response.response(res, 'Error while registering user', null, 400);
     }
 };
