@@ -11,6 +11,9 @@ const {
   accessTokenGenerator,
   refreshTokenGenerator,
 } = require("../utils/tokenGenerate");
+const {
+  verifyRefreshToken,
+} = require("../utils/tokenValidation");
 
 exports.register = async (req, res) => {
   try {
@@ -75,8 +78,8 @@ exports.userLogin = async ({ body: { email, password } }, res) => {
       logger.warn("Password is Incorrect");
       return response.response(res, "Password is Incorrect", null, 400);
     }
-    const accessToken = await accessTokenGenerator(res, user);
-    const refreshToken = await refreshTokenGenerator(res, user);
+    const accessToken = await accessTokenGenerator(user);
+    const refreshToken = await refreshTokenGenerator(user);
 
     if (
       !accessToken ||
@@ -91,9 +94,31 @@ exports.userLogin = async ({ body: { email, password } }, res) => {
     res.header("acceses-token", accessToken);
     res.header("refresh-token", refreshToken);
 
-    return response.response(res, "User found", null, 200);
+    return response.response(res, "Login Successfull", null, 200);
   } catch (error) {
-    logger.error("Error while logging in user", error.message);
+    logger.error("Error while logging in user: ", error.message);
     return response.response(res, error.message, null, 400);
+  }
+};
+
+exports.generateAccessToken = async (req, res) => {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(" ")[0] === "Bearer"
+  ) {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = await verifyRefreshToken(token);
+      decoded["_id"] = decoded.userId;
+      delete decoded.userId;
+      const accessToken = await accessTokenGenerator(decoded);
+      res.header("acceses-token", accessToken);
+      return response.response(res, "Token generated successfully", null, 200);
+    } catch (error) {
+      logger.error("Error while generating token: ", error.message);
+      return response.response(res, error.message, null, 400);
+    }
+  } else {
+    return response.response(res, "No token, authorization denied", null, 400);
   }
 };

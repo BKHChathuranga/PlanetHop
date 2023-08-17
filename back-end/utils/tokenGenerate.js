@@ -1,10 +1,9 @@
 const jwt = require("jsonwebtoken");
 const logger = require("../utils/logger");
-const response = require("../utils/response");
 const RefreshToken = require("../models/refreshToken");
 require("dotenv").config();
 
-exports.accessTokenGenerator = async (res, user) => {
+exports.accessTokenGenerator = async (user) => {
   try {
     const accessToken = jwt.sign(
       { userId: user._id, firstName: user.firstName, lastName: user.lastName },
@@ -13,12 +12,11 @@ exports.accessTokenGenerator = async (res, user) => {
     );
     return Promise.resolve(accessToken);
   } catch (error) {
-    logger.error("Error while accesse generating tokens", error);
     return Promise.reject(error);
   }
 };
 
-exports.refreshTokenGenerator = async (res, user) => {
+exports.refreshTokenGenerator = async (user) => {
   try {
     const refreshToken = jwt.sign(
       { userId: user._id, firstName: user.firstName, lastName: user.lastName },
@@ -32,7 +30,6 @@ exports.refreshTokenGenerator = async (res, user) => {
     await new RefreshToken({ userId: user._id, token: refreshToken }).save();
     return Promise.resolve(refreshToken);
   } catch (error) {
-    logger.error("Error while refresh generating tokens", error);
     return Promise.reject(error);
   }
 };
