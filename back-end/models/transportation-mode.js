@@ -16,4 +16,4 @@ const transportationMode = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model();
+module.exports = mongoose.model('TransportationMode', transportationMode);

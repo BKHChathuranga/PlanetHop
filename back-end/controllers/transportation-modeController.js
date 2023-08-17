@@ -1,5 +1,15 @@
-const transportationMode = require('../models/transportation-mode');
+const TransportationMode = require('../models/transportation-mode');
 
-exports.transportationMode = async (req, res) => {
-    
+exports.fetchtransportationModes = async (req, res) => {
+        try {
+
+          const transportationModes = await TransportationMode.find({});
+          res.status(200).json(transportationModes);
+
+        } catch (error) {
+
+          console.error('Error fetching transportation modes:', error);
+
+        }
+
 };
