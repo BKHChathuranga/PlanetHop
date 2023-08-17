@@ -9,6 +9,7 @@ require('dotenv').config();
 const port = parseInt(process.env.PORT);
 mongoose.set("strictQuery", false);
 
+//data connetion
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
