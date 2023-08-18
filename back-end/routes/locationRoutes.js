@@ -1,8 +1,9 @@
-const app = require('express');
+const app = require("express");
 const router = app.Router();
 
-const locationController = require('../controllers/locationController');
+const locationController = require("../controllers/locationController");
+const { verifyUser } = require("../middlewares/authMiddleware");
 
-router.get('/location', locationController.fetchlocations);
+router.get("/location", verifyUser, locationController.fetchlocations);
 
 module.exports = router;
