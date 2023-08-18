@@ -2,9 +2,10 @@ const User = require("../models/user");
 const response = require("../utils/response");
 const bcrypt = require("bcrypt");
 const logger = require("../utils/logger");
-const {emailValidator,passwordValidator,phoneNumberValidator} = require("../utils/validation");
+const { emailValidator, passwordValidator, phoneNumberValidator } = require("../utils/validation");
 const { accessTokenGenerator, refreshTokenGenerator } = require("../utils/tokenGenerate");
 const { verifyRefreshToken } = require("../utils/tokenValidation");
+const RefreshToken = require("../models/refreshToken");
 
 exports.register = async (req, res) => {
     try {
@@ -104,6 +105,25 @@ exports.generateAccessToken = async (req, res) => {
         } catch (error) {
             logger.error("Error while generating token: ", error);
             return response.response(res, 'Error while generating token', null, 400);
+        }
+    } else {
+        logger.warn("No token, authorization denied");
+        return response.response(res, "No token, authorization denied", null, 400);
+    }
+};
+
+exports.userLogout = async (req, res) => {
+    if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            const decoded = await verifyRefreshToken(token);
+            await RefreshToken.deleteOne({ userId: decoded.userId });
+
+            logger.info("Logout Successfull");
+            return response.response(res, "Logout Successfull", null, 200);
+        } catch (error) {
+            logger.error("Error while logout: ", error);
+            return response.response(res, 'Error while logout', null, 400);
         }
     } else {
         logger.warn("No token, authorization denied");
