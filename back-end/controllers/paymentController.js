@@ -33,9 +33,10 @@ exports.createPayment = async (req, res) => {
             customer: customer.id,
         })
 
+        logger.info("Payment created successfully");
         response.response(res, "Payment created successfully", session.url, 201);
-    }catch (error){
-        logger.error("Error while creating payment", error.message);
+    } catch (error) {
+        logger.error("Error while creating payment", error);
         return response.response(res, "Error while creating payment", null, 400);
     }
 };
