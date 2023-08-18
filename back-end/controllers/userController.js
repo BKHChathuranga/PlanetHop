@@ -2,22 +2,27 @@ const User = require('../models/user');
 const response = require('../utils/response');
 const bcrypt = require('bcrypt');
 const logger = require('../utils/logger');
-const { emailValidator, passwordValidator, phoneNumberValidator } = require('../utils/validation');
+const { emailValidator, passwordValidator, phoneNumberValidator, npnValidator } = require('../utils/validation');
 
 exports.register = async (req, res) => {
     try {
-        const { firstName, lastName, npi, email, password, phoneNumber } = req.body;
+        const { firstName, lastName, npn, email, password, phoneNumber } = req.body;
 
-        if(emailValidator(email) === false || passwordValidator(password) === false || (phoneNumber && phoneNumberValidator(phoneNumber) === false)) {
-            logger.warn('Invalid email, password or phone number');
-            return response.response(res, 'Invalid email, password or phone number', null, 400);
+        if (
+            emailValidator(email) === false ||
+            passwordValidator(password) === false ||
+            npnValidator(npn) === false ||
+            (phoneNumber && phoneNumberValidator(phoneNumber) === false)
+        ) {
+            logger.warn("Invalid email, npn, password or phone number");
+            return response.response(res, "Invalid email, npn, password or phone number", null, 400);
         }
-
-        const existingUser = await User.findOne({ $or: [{ npi }, { email }] });
+        
+        const existingUser = await User.findOne({ $or: [{ npn }, { email }] });
 
         if (existingUser) {
-            logger.warn('NPI or email already exists');
-            return response.response(res, 'NPI or email already exists', null, 400);
+            logger.warn('NPN or email already exists');
+            return response.response(res, 'NPN or email already exists', null, 400);
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,7 +30,7 @@ exports.register = async (req, res) => {
         const newUser = new User({
             firstName,
             lastName,
-            npi,
+            npn,
             email,
             password: hashedPassword,
             phoneNumber

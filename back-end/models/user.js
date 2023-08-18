@@ -9,9 +9,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Last name is required']
     },
-    npi: {
+    npn: {
         type: String,
-        required: [true, 'NPI is required'],
+        required: [true, 'NPN is required'],
         unique: true
     },
     email: {
