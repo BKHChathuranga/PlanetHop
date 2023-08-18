@@ -11,9 +11,8 @@ const {
   accessTokenGenerator,
   refreshTokenGenerator,
 } = require("../utils/tokenGenerate");
-const {
-  verifyRefreshToken,
-} = require("../utils/tokenValidation");
+const { verifyRefreshToken } = require("../utils/tokenValidation");
+const RefreshToken = require("../models/refreshToken");
 
 exports.register = async (req, res) => {
   try {
@@ -120,5 +119,29 @@ exports.generateAccessToken = async (req, res) => {
     }
   } else {
     return response.response(res, "No token, authorization denied", null, 400);
+  }
+};
+
+exports.userLogout = async (req, res) => {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(" ")[0] === "Bearer"
+  ) {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = await verifyRefreshToken(token);
+      await RefreshToken.deleteOne({ userId: decoded.userId });
+      return response.response(res, "Logout Successfull", null, 200);
+    } catch (error) {
+      logger.error("Error while logout: ", error.message);
+      return response.response(res, error.message, null, 400);
+    }
+  } else {
+    return response.response(
+      res,
+      "No token, cannot remove refresh token",
+      null,
+      400
+    );
   }
 };
