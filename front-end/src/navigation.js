@@ -7,8 +7,8 @@ const Drawer = createDrawerNavigator();
 const NavContainer = () => {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="Register" component={RegistrationScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Drawer.Screen name="Register" component={RegistrationScreen} />
     </Drawer.Navigator>
   );
 }
