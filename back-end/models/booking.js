@@ -23,6 +23,10 @@ const bookingSchema = new mongoose.Schema({
     },
     departureTime: {
         type: Date
+    },
+    npn: {
+        type: Array,
+        required: [true, 'NPN is required']
     }
 });
 
