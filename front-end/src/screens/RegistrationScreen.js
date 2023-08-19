@@ -1,8 +1,12 @@
-import React, {Text} from 'react-native'
+import { StatusBar } from 'expo-status-bar';
+import React, { Text } from 'react-native'
 
 const RegistrationScreen = () => {
   return (
-    <Text>RegistrationScreen</Text>
+    <>
+      <StatusBar style='dark' />
+      <Text>RegistrationScreen</Text>
+    </>
   )
 }
 
