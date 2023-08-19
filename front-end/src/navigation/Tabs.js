@@ -6,6 +6,7 @@ import RegistrationScreen from '../screens/RegistrationScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import WelcomeScreen from '../screens/WelcomeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +51,12 @@ const Tabs = () => {
                 }
             })}
         >
-            <Tab.Screen name='Home' component={HomeScreen} options={{
+            <Tab.Screen name="welcomeScreen" component={WelcomeScreen} options={{
+                tabBarItemStyle: { display: 'none' },
+                tabBarStyle: { display: 'none' }
+            }}></Tab.Screen>
+            <Tab.Screen name='home' component={HomeScreen} options={{
+                headerShown: false,
                 tabBarIcon: ({ focused }) => (
                     <View style={{ backgroundColor: focused ? 'rgba(121, 26, 246, 0.3)' : null, borderRadius: 8, padding: 6 }}>
                         <Ionicons name="home-outline" size={22} style={{
@@ -60,6 +66,7 @@ const Tabs = () => {
                 ),
             }}></Tab.Screen>
             <Tab.Screen name='register' component={RegistrationScreen} options={{
+                headerShown: false,
                 tabBarIcon: ({ focused }) => (
                     <MaterialCommunityIcons name="rocket-outline" size={40} color="#fff" />
                 ),
@@ -69,6 +76,7 @@ const Tabs = () => {
                 )
             }}></Tab.Screen>
             <Tab.Screen name='profile' component={ProfileScreen} options={{
+                headerShown: false,
                 tabBarIcon: ({ focused }) => (
                     <View style={{ backgroundColor: focused ? 'rgba(121, 26, 246, 0.3)' : null, borderRadius: 8, padding: 6 }}>
                         <Feather name="user" size={22} style={{

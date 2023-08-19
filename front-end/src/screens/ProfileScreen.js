@@ -4,6 +4,7 @@ import { useState } from 'react';
 import BookingCard from '../components/bookingCard';
 import { ProfileMainTabs } from '../constants/ProfileMainTabs';
 import { ProfileStatusTabs } from '../constants/ProfileStatusTabs';
+import { StatusBar } from 'expo-status-bar';
 
 const ProfileScreen = () => {
 
@@ -41,6 +42,7 @@ const ProfileScreen = () => {
 
     return (
         <View style={styles.container}>
+            <StatusBar style='light' />
             <View style={styles.header}>
                 <Image source={headerImage} style={{ width: '100%', height: '100%', position: 'absolute', borderBottomLeftRadius: 30, borderBottomRightRadius: 30, }} />
                 <View style={{ flexDirection: 'column' }}>
