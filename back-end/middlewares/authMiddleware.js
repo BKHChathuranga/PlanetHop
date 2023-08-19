@@ -18,10 +18,11 @@ exports.verifyUser = async (req, res, next) => {
       }
       next();
     } catch (error) {
-      logger.error("Error while verifying user: ", error.message);
-      return response.response(res, error.message, null, 400);
+      logger.error("Error while verifying user: ", error);
+      return response.response(res, "Error while verifying user", null, 400);
     }
   } else {
+    logger.warn("No token, authorization denied");
     return response.response(res, "No token, authorization denied", null, 400);
   }
 };

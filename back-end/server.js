@@ -25,8 +25,8 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-app.use("/planetHop", router);
+app.use('/planetHop', router);
 
 app.listen(port, () => {
-  logger.info(`Server running on port: ${port}`);
+    logger.info(`Server running on port: ${port}`);
 });

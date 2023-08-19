@@ -12,3 +12,8 @@ exports.phoneNumberValidator = (phoneNumber) => {
     const phoneNumberRegex = /^(?:\+94|0)(?:\d{9}|\d{10})$/;
     return phoneNumberRegex.test(phoneNumber);
 };
+
+exports.npnValidator = (npn) => {
+    const npnRegex = /^[A-Z]{2}[A-Z]{2}\d{4}[A-Z]{2}\d{10}$/;
+    return npnRegex.test(npn);
+};
