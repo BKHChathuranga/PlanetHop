@@ -27,6 +27,11 @@ const bookingSchema = new mongoose.Schema({
     npn: {
         type: Array,
         required: [true, 'NPN is required']
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'cancelled', 'completed'],
+        default: 'pending'
     }
 });
 
