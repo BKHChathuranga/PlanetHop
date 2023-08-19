@@ -26,20 +26,32 @@ const Inputbox = ({ label, placeholder, secureTextEntry, IconName, input, setInp
             <Text style={styles.inputHeader}>{label}</Text>
             <View style={styles.inputGroup}>
                 <AntDesign name={IconName} size={22} style={[styles.icon, { color: "#791AF6" }]} />
-                <TextInput
-                    placeholder={placeholder}
-                    style={styles.input}
-                    secureTextEntry={passwordVisibility}
-                    autoCorrect={false}
-                    onChangeText={(inp) => setInput(inp)}
-                    value={input}
-                    editable={canEdit == null ? true : canEdit}
-                />
-                {secureTextEntry ?
-                    <Pressable onPress={handlePasswordVisibility} style={styles.visibilityEye}>
-                        <AntDesign name={rightIcon} size={22} color="#8250BB" />
-                    </Pressable> : null
-                }
+                {secureTextEntry ? (
+                    <>
+                        <TextInput
+                            placeholder={placeholder}
+                            style={styles.input}
+                            secureTextEntry={passwordVisibility}
+                            autoCorrect={false}
+                            onChangeText={(inp) => setInput(inp)}
+                            value={input}
+                            editable={canEdit == null ? true : canEdit}
+                        />
+                        <Pressable onPress={handlePasswordVisibility} style={styles.visibilityEye}>
+                            <AntDesign name={rightIcon} size={22} color="#8250BB" />
+                        </Pressable>
+                    </>
+                ) : (
+                    <TextInput
+                        placeholder={placeholder}
+                        style={styles.input}
+                        secureTextEntry={false}
+                        autoCorrect={false}
+                        onChangeText={(inp) => setInput(inp)}
+                        value={input}
+                        editable={canEdit == null ? true : canEdit}
+                    />
+                )}
             </View>
         </View>
     )
@@ -62,13 +74,14 @@ const styles = StyleSheet.create({
         minHeight: 45,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#791AF6'
+        borderColor: '#791AF6',
     },
     input: {
         textAlign: "justify",
         paddingBottom: 10,
         color: "#fff",
         flex: 7,
+        paddingTop: 8,
     },
     icon: {
         flex: 1,
