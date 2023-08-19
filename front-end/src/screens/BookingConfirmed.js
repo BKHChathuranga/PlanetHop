@@ -64,7 +64,7 @@ const BookingConfirmed = ({navigation}) => {
       <Text style={styles.fontStyle4}></Text>
       <TouchableOpacity
         style={styles.appButtonContainer}
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("profile")}
       >
         <Text style={styles.appButtonText}>Continue</Text>
       </TouchableOpacity>
