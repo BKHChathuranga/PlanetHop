@@ -7,8 +7,11 @@ const transportationMode = new mongoose.Schema({
     pricePerKm : {
         type: Number
     },
-    numOfSheets : {
-        type: String
+    numOfSeats : {
+        type: Number
+    },
+    availableSeats : {
+        type: Number
     }
 });
 
