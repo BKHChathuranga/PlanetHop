@@ -7,7 +7,7 @@ exports.verifyAccessToken = async (token) => {
     const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     return Promise.resolve(decoded);
   } catch (error) {
-    return Promise.reject({ error: true, message: error });
+    return Promise.reject({ error: true, message: error.message });
   }
 };
 
@@ -22,6 +22,6 @@ exports.verifyRefreshToken = async (token) => {
     }
     return Promise.resolve(decoded);
   } catch (error) {
-    return Promise.reject({ error: true, message: error });
+    return Promise.reject({ error: true, message: error.message });
   }
 };
