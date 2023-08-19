@@ -48,7 +48,7 @@ const WelcomeScreen = ({navigation}) => {
       </View>
       <TouchableOpacity
         style={styles.appButtonContainer}
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.navigate("home")}
       >
         <Text style={styles.appButtonText}>Continue</Text>
       </TouchableOpacity>
