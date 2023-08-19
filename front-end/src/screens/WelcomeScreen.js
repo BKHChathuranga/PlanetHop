@@ -41,7 +41,7 @@ const WelcomeScreen = ({navigation}) => {
       </View>
       <View style={styles.imageContainer}>
       <Image
-        style={styles.Image}
+        style={styles.image}
         source={require("./../../assets/welcome_image.png")}
         contentFit="fill"
       />
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 7,
   },
-  Image: {
+  image: {
     width: WIDTH*0.99,
     height: HEIGHT*0.8,
   },
