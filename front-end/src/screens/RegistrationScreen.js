@@ -6,8 +6,8 @@ import {
   Text,
   Button,
   Dimensions,
-  ScrollView,
 } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -19,7 +19,7 @@ const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
 
 import { Poppins_700Bold, Poppins_500Medium } from "@expo-google-fonts/poppins";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import AboutPlanetFeatureCard from "../components/AboutPlanetFeatureCard";
 
 const RegistrationScreen = () => {
   let [fontsLoaded] = useFonts({
@@ -135,40 +135,11 @@ const RegistrationScreen = () => {
                   </TouchableOpacity>
                 </ScrollView>
               </View>
-              <View style={styles.scrollHorizontalArea}>
-                <Text style={styles.scrollHorizontalTitle}>
-                  Places to visit in Saturn
-                </Text>
-                <ScrollView horizontal contentContainerStyle={styles.scrollHorizontal}>
-                  <TouchableOpacity>
-                  <Image
-                    style={styles.visitImage}
-                    source={require("./../../assets/saturn_visit_image1.png")}
-                    contentFit="cover"
-                  />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                  <Image
-                    style={styles.visitImage}
-                    source={require("./../../assets/saturn_visit_image1.png")}
-                    contentFit="cover"
-                  />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                  <Image
-                    style={styles.visitImage}
-                    source={require("./../../assets/saturn_visit_image1.png")}
-                    contentFit="cover"
-                  />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                  <Image
-                    style={styles.visitImage}
-                    source={require("./../../assets/saturn_visit_image1.png")}
-                    contentFit="cover"
-                  />
-                  </TouchableOpacity>
-                </ScrollView>
+              <View style={styles.featureArea}>
+                <AboutPlanetFeatureCard/>
+                <AboutPlanetFeatureCard/>
+                <AboutPlanetFeatureCard/>
+                <AboutPlanetFeatureCard/>
               </View>
             </ScrollView>
           </View>
@@ -236,6 +207,12 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderRadius: 10,
   },
+  featureArea:{
+    flex:1,
+    flexDirection:"row",
+    flexWrap:"wrap",
+    gap:10
+  }
 });
 
 export default RegistrationScreen;
