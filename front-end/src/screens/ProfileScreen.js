@@ -2,17 +2,10 @@ import React, { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, But
 import headerImage from '../../assets/profileHeader.png';
 import { useState } from 'react';
 import BookingCard from '../components/bookingCard';
+import { ProfileMainTabs } from '../constants/ProfileMainTabs';
+import { ProfileStatusTabs } from '../constants/ProfileStatusTabs';
 
 const ProfileScreen = () => {
-    const mainHeader = [
-        {
-            key: 'pi',
-            Header: 'Personal Information'
-        },
-        {
-            key: 'mb',
-            Header: 'My Bookings'
-        }]
 
     const bookings = [
         {
@@ -20,7 +13,7 @@ const ProfileScreen = () => {
             from: 'Mars',
             to: 'Saturn',
             mode: 'SpaceX 19001',
-            date: '10/12/2023',
+            date: '10/12/2165',
             time: '18:00',
             status: 'completed'
         },
@@ -29,12 +22,22 @@ const ProfileScreen = () => {
             from: 'Earth',
             to: 'Saturn',
             mode: 'SpaceX 19002',
-            date: '10/12/2023',
+            date: '10/12/2165',
             time: '18:00',
-            status: 'Canceled'
+            status: 'canceled'
+        },
+        {
+            key: 3,
+            from: 'Saturn',
+            to: 'Mars',
+            mode: 'SpaceX 25000',
+            date: '10/12/2165',
+            time: '18:00',
+            status: 'upcoming'
         }
     ]
     const [selectedMainHeader, setSelectedMainHeader] = useState('pi');
+    const [selectedStatusHeader, setSelectedStatusHeader] = useState('upcoming');
 
     return (
         <View style={styles.container}>
@@ -50,7 +53,7 @@ const ProfileScreen = () => {
                         </View>
                     </View>
                     <View style={styles.Mainheader}>
-                        {mainHeader.map(value => (
+                        {ProfileMainTabs.map(value => (
                             <TouchableOpacity style={[styles.button, selectedMainHeader === value.key && styles.selected]} key={value.key} onPress={() => setSelectedMainHeader(value.key)}>
                                 <Text
                                     style={[
@@ -71,10 +74,26 @@ const ProfileScreen = () => {
                     </View>
                 </View>
             ) : (
-                <View style={[styles.section, {flex: 1, marginVertical: 10}]}>
-                    {bookings.map(value => (
-                        <BookingCard key={value.key}/>
-                    ))}
+                <View style={[styles.section, { flex: 1, marginVertical: 10 }]}>
+                    <View style={styles.Sectionheader}>
+                        {ProfileStatusTabs.map(value => (
+                            <TouchableOpacity style={[styles.statusButton, selectedStatusHeader === value.Header && styles.selected]} key={value.key} onPress={() => setSelectedStatusHeader(value.Header)}>
+                                <Text
+                                    style={[
+                                        styles.buttonLabel, selectedStatusHeader === value.Header && styles.selectedLabel
+                                    ]}>
+                                    {value.Header}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                    {bookings.map(value => {
+                        {
+                            if (value.status === selectedStatusHeader) {
+                                return <BookingCard key={value.key} from={value.from} to={value.to} mode={value.mode} date={value.date} time={value.time} status={value.status} />
+                            }
+                        }
+                    })}
                 </View>
             )}
         </View>
@@ -125,6 +144,16 @@ const styles = StyleSheet.create({
         minWidth: '44%',
         textAlign: 'center',
     },
+    statusButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderRadius: 4,
+        backgroundColor: '#030413',
+        marginHorizontal: '1%',
+        marginVertical: 4,
+        minWidth: '31%',
+        textAlign: 'center',
+    },
     selected: {
         backgroundColor: '#791AF6',
         borderWidth: 0,
@@ -143,6 +172,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#030413',
         marginTop: 15,
         marginHorizontal: 16,
+        borderWidth: 1,
+        borderColor: '#791AF6',
+        borderRadius: 7
+    },
+    Sectionheader: {
+        flexDirection: 'row',
+        backgroundColor: '#030413',
+        marginVertical: 10,
         borderWidth: 1,
         borderColor: '#791AF6',
         borderRadius: 7

@@ -3,20 +3,20 @@ import React, { Text, View, StyleSheet } from 'react-native'
 const BookingCard = (props) => {
     return (
         <View style={styles.card}>
-            <View style={styles.descCard}>
+            <View style={[styles.descCard, props.status === 'canceled' && {backgroundColor: '#FF542E'}, props.status === 'completed' && {backgroundColor: '#6EFA74'}, props.status === 'upcoming' && {backgroundColor: '#CDFA6E'}]}>
                 <View style={{ flexDirection: 'row', paddingBottom: 18 }}>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
                         <Text style={styles.titleText}>From</Text>
-                        <Text style={[{paddingTop: 3}, styles.descText]}>Earth</Text>
+                        <Text style={[{paddingTop: 3}, styles.descText]}>{props.from}</Text>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
                         <Text style={styles.titleText}>to</Text>
-                        <Text style={[{paddingTop: 3}, styles.descText]}>Saturn</Text>
+                        <Text style={[{paddingTop: 3}, styles.descText]}>{props.to}</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={[styles.titleText, {flex: 1, alignSelf: 'center'}]}>mode</Text>
-                    <Text style={[styles.descText, {flex: 2, alignSelf: 'center'}]}>SpaceX 19001</Text>
+                    <Text style={[styles.descText, {flex: 2, alignSelf: 'center'}]}>{props.mode}</Text>
                 </View>
             </View>
             <View style={styles.dateCard}>
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     },
     descCard: {
         flex: 4,
-        backgroundColor: '#6EFA74',
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15,
         padding: 10,
