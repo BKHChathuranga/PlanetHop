@@ -1,38 +1,15 @@
 const Booking = require('../models/booking');
-const User = require('../models/user');
 const response = require('../utils/response');
 const logger = require('../utils/logger');
-
-const validateUser = async (idOrNpn) => {
-    const user = await User.findOne(idOrNpn instanceof Object ? idOrNpn : { _id: idOrNpn });
-    if (!user) {
-        logger.warn('User not found');
-        return null;
-    }
-    return user;
-};
+const { validateUser } = require('../utils/validation');
 
 exports.createBooking = async (req, res) => {
     try {
-        const { date, totalPrice, transportationMode, from, to, departureTime, id, npnList } = req.body;
+        const { date, totalPrice, transportationMode, from, to, departureTime, id } = req.body;
 
         const user = await validateUser(id);
         if (!user) {
             return response.response(res, 'User not found', null, 404);
-        }
-
-        const existingUsers = await User.find({ npn: { $in: npnList } });
-
-        if (existingUsers.length !== npnList.length) {
-            logger.warn('Some users not found');
-            return response.response(res, 'Some users not found', null, 404);
-        }
-
-        const npnSet = new Set([...npnList, user.npn]);
-
-        if (npnSet.size !== npnList.length + 1) {
-            logger.warn('Duplicate NPNs found');
-            return response.response(res, 'Duplicate NPNs found', null, 400);
         }
 
         const newBooking = new Booking({
@@ -42,7 +19,7 @@ exports.createBooking = async (req, res) => {
             from,
             to,
             departureTime,
-            npn: Array.from(npnSet)
+            npn: user.npn,
         });
 
         await newBooking.save();
@@ -57,9 +34,7 @@ exports.createBooking = async (req, res) => {
 
 exports.getBookings = async (req, res) => {
     try {
-        const { id } = req.body;
-
-        const user = await validateUser(id);
+        const user = await validateUser(req.params.id);
         if (!user) {
             return response.response(res, 'User not found', null, 404);
         }
@@ -75,7 +50,7 @@ exports.getBookings = async (req, res) => {
 };
 
 exports.cancelBooking = async (req, res) => {
-    try{
+    try {
         const { id } = req.body;
 
         const user = await validateUser(id);
@@ -92,25 +67,8 @@ exports.cancelBooking = async (req, res) => {
 
         logger.info('Booking cancelled successfully');
         return response.response(res, 'Booking cancelled successfully', cancelBooking, 200);
-    }catch (error) {
+    } catch (error) {
         logger.error('Error while cancelling booking', error);
         return response.response(res, 'Error while cancelling booking', null, 400);
-    }
-};
-
-exports.getNpn = async (req, res) => {
-    try {
-        const { npn } = req.body;
-
-        const user = await validateUser({ npn });
-        if (!user) {
-            return response.response(res, 'User not found', null, 404);
-        }
-
-        logger.info('NPN fetched successfully');
-        return response.response(res, 'NPN fetched successfully', user.npn, 200);
-    }catch (error) {
-        logger.error('Error while fetching NPN', error);
-        return response.response(res, 'Error while fetching NPN', null, 400);
     }
 };

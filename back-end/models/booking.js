@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bookingSchema = new mongoose.Schema({
     date: {
         type: Date,
+        default: Date.now,
         required: [true, 'Date is required']
     },
     totalPrice: {
@@ -22,10 +23,11 @@ const bookingSchema = new mongoose.Schema({
         required: [true, 'To is required']
     },
     departureTime: {
-        type: Date
+        type: Date,
+        default: () => new Date(Date.now() + 3600000)
     },
     npn: {
-        type: Array,
+        type: String,
         required: [true, 'NPN is required']
     },
     status: {
