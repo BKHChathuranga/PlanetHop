@@ -210,7 +210,7 @@ exports.sendConfirmationEmail = async (detail) => {
               
         <div class="v-font-size" style="font-size: 14px; color: #444444; line-height: 170%; text-align: justify; word-wrap: break-word;">
           <p style="line-height: 170%;">Dear Sir/Madam,</p>
-      <p style="line-height: 170%;">We're excited to confirm your upcoming adventure from Saturn to Mars! Your journey awaits, and we're delighted to provide you with</p>
+      <p style="line-height: 170%;">We're excited to confirm your upcoming adventure from ${detail.from} to ${detail.to}! Your journey awaits, and we're delighted to provide you with</p>
       <p style="line-height: 170%;"> </p>
       <p style="line-height: 170%;">Details:</p>
       <p style="line-height: 170%;">Trip: ${detail.from} to ${detail.to} Departure</p>
