@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useLayoutEffect } from 'react';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -20,7 +20,11 @@ import HomeImageCard from "../components/HomeImageCard";
 import { transportationModes } from "../constants/Screens/HomeScreen";
 import { news } from "../constants/Screens/HomeScreen";
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+
   let [fontsLoaded] = useFonts({
     Poppins_800ExtraBold,
     Poppins_500Medium,
@@ -45,9 +49,9 @@ export default function HomeScreen() {
             <Text style={styles.headerSignInText}>
               Explore new dimensions with us!
             </Text>
-            <TouchableOpacity style={styles.signInButton}>
+            <TouchableOpacity style={styles.signInButton} onPress={() => navigation.navigate("login")}>
               <Text style={styles.buttonText}>SignIn</Text>
-            </TouchableOpacity>
+            </TouchableOpacity >
           </View>
           <View style={styles.subSectionBodyContainer}>
             <Text style={styles.subSectionHeader}>
