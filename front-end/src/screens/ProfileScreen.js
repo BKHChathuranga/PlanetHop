@@ -1,44 +1,46 @@
 import React, { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Button } from 'react-native'
 import headerImage from '../../assets/profileHeader.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BookingCard from '../components/bookingCard';
 import { ProfileMainTabs } from '../constants/ProfileMainTabs';
 import { ProfileStatusTabs } from '../constants/ProfileStatusTabs';
 import { StatusBar } from 'expo-status-bar';
+import { GetAllBookings } from '../services/BookingService';
+import {
+    Poppins_800ExtraBold,
+    Poppins_700Bold,
+    Poppins_500Medium,
+    Poppins_400Regular
+} from "@expo-google-fonts/poppins";
+import { useFonts } from "expo-font";
 
 const ProfileScreen = () => {
-
-    const bookings = [
-        {
-            key: 1,
-            from: 'Mars',
-            to: 'Saturn',
-            mode: 'SpaceX 19001',
-            date: '10/12/2165',
-            time: '18:00',
-            status: 'completed'
-        },
-        {
-            key: 2,
-            from: 'Earth',
-            to: 'Saturn',
-            mode: 'SpaceX 19002',
-            date: '10/12/2165',
-            time: '18:00',
-            status: 'canceled'
-        },
-        {
-            key: 3,
-            from: 'Saturn',
-            to: 'Mars',
-            mode: 'SpaceX 25000',
-            date: '10/12/2165',
-            time: '18:00',
-            status: 'upcoming'
-        }
-    ]
     const [selectedMainHeader, setSelectedMainHeader] = useState('pi');
     const [selectedStatusHeader, setSelectedStatusHeader] = useState('upcoming');
+    const [allBookings, setAllBookings] = useState([]);
+
+    function getBookings() {
+        GetAllBookings().then((res) => {
+            setAllBookings(res.data);
+        }).catch((err) => {
+            console.log(err.message)
+        })
+    }
+
+    useEffect(() => {
+        getBookings();
+    }, [])
+
+    let [fontsLoaded] = useFonts({
+        Poppins_800ExtraBold,
+        Poppins_700Bold,
+        Poppins_500Medium,
+        Poppins_400Regular
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <View style={styles.container}>
@@ -89,10 +91,10 @@ const ProfileScreen = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
-                    {bookings.map(value => {
+                    {allBookings.data?.map(value => {
                         {
                             if (value.status === selectedStatusHeader) {
-                                return <BookingCard key={value.key} from={value.from} to={value.to} mode={value.mode} date={value.date} time={value.time} status={value.status} />
+                                return <BookingCard key={value._id} from={value.from} to={value.to} mode={value.transportationMode} date={value.date} time={value.departureTime} status={value.status} />
                             }
                         }
                     })}
@@ -128,13 +130,14 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 35,
-        fontWeight: 'bold',
-        color: '#ffffff'
+        color: '#ffffff',
+        fontFamily: 'Poppins_700Bold'
     },
     label: {
         fontSize: 15,
         color: '#ffffff',
         marginTop: 5,
+        fontFamily: 'Poppins_400Regular'
     },
     button: {
         paddingHorizontal: 8,
@@ -162,9 +165,9 @@ const styles = StyleSheet.create({
     },
     buttonLabel: {
         fontSize: 15,
-        fontWeight: '500',
         color: '#791AF6',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontFamily: 'Poppins_400Regular'
     },
     selectedLabel: {
         color: 'white',
@@ -187,8 +190,10 @@ const styles = StyleSheet.create({
         borderRadius: 7
     },
     section: {
+        flex: 1,
         paddingHorizontal: 16,
         marginVertical: 5,
+        backgroundColor: '#030413',
     },
     sectionHeader: {
         flexDirection: 'row',

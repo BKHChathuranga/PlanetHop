@@ -54,12 +54,12 @@ const RegistrationScreen = ({ navigation }) => {
       setPwd({ ...pwd, error: passwordError })
       return ''
     }
-     else if (pwd.value !== cpwd.value) {
-        const confirmPasswordError = "Passwords do not match"
-        setCpwd({ ...cpwd, error: confirmPasswordError })
-        return ''
+    else if (pwd.value !== cpwd.value) {
+      const confirmPasswordError = "Passwords do not match"
+      setCpwd({ ...cpwd, error: confirmPasswordError })
+      return ''
     }
-     else {
+    else {
       try {
         const data = {
           firstName: fName,
