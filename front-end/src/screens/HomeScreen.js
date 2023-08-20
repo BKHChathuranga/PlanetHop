@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useContext } from 'react';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -19,8 +19,13 @@ import {
 import HomeImageCard from "../components/HomeImageCard";
 import { transportationModes } from "../constants/Screens/HomeScreen";
 import { news } from "../constants/Screens/HomeScreen";
+import { useAuth } from '../contexts/AuthContext';
+
 
 export default function HomeScreen({navigation}) {
+const {userData} = useAuth();
+console.log(userData);
+
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
