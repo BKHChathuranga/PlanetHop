@@ -13,7 +13,7 @@ const planetDetails = {
     jupiter: {
         desc: <>You‘ve been selected one of the best travel destinations. You can feel and experience the culture and other things in <Text style={{color: '#B36EFA'}}>Jupiter</Text>.</>,
         bullets: [
-            <>Jupiter is the fifth planet from the Sun.</>,
+            <>Jupiter is the <Text style={{color: '#B36EFA'}}>fifth planet</Text> from the Sun.</>,
             <>Jupiter has an impressive collection of moons, including the four largest known as the Galilean moons</>,
             <>There are stunning auroras in the polar region</>,
             <>There are floating cities among dense cloud layers.</>,
@@ -22,7 +22,7 @@ const planetDetails = {
     saturn: {
         desc: <>You‘ve been selected one of the best travel destinations. You can feel and experience the culture and other things in <Text style={{color: '#B36EFA'}}>Saturn</Text>.</>,
         bullets: [
-            <>Saturn is the sixth planet from the Sun.</>,
+            <>Saturn is the <Text style={{color: '#B36EFA'}}>sixth planet</Text> from the Sun.</>,
             <>Saturn has an iconic ring system which the travellers can witness up close.</>,
             <>There are Methane lakes, icy mountains and exotic life within</>,
             <>There are space habitats within saturn rings</>,
@@ -31,7 +31,7 @@ const planetDetails = {
     uranus: {
         desc: <>You‘ve been selected one of the best travel destinations. You can feel and experience the culture and other things in <Text style={{color: '#B36EFA'}}>Uranus</Text>.</>,
         bullets: [
-            <>Uranus is the seventh planet from the Sun</>,
+            <>Uranus is the <Text style={{color: '#B36EFA'}}>seventh planet</Text> from the Sun</>,
             <>Has diverse and rugged landscape with deep canyons, towering cliffs, and icy plains.</>,
             <>Uranus has extreme seasons and unique sunlight angles</>,
             <>There are cultural events such as ice sculpting festivals</>,
@@ -40,7 +40,7 @@ const planetDetails = {
     neptune: {
         desc: <>You‘ve been selected one of the best travel destinations. You can feel and experience the culture and other things in <Text style={{color: '#B36EFA'}}>Neptune</Text>.</>,
         bullets: [
-            <>Neptune is the eighth planet from the  sun</>,
+            <>Neptune is the <Text style={{color: '#B36EFA'}}>eighth planet</Text> from the  sun</>,
             <>There are geysers erupting beneath the icy surface</>,
             <>Visitors can join underwater explorations</>,
             <>Cultural events include cosmic themed music and art festivals</>,

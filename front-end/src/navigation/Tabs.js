@@ -73,7 +73,7 @@ const Tabs = () => {
                     </View>
                 ),
             }}></Tab.Screen>
-            <Tab.Screen name='register' component={BookingScreen} options={{
+            <Tab.Screen name='booking' component={BookingScreen} options={{
                 tabBarItemStyle: {display: 'none'},
                 tabBarStyle: {display: 'none'},
                 headerShown: false,
