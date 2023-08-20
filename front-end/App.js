@@ -1,20 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler'
+import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts, Poppins_400Regular } from "@expo-google-fonts/poppins";
+import { useCallback } from 'react';
+import Tabs from './src/navigation/Tabs';
+// SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <NavigationContainer onLayout={onLayoutRootView}>
+        <Tabs />
+      </NavigationContainer>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });
