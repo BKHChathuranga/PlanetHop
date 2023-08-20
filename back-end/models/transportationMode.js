@@ -9,9 +9,6 @@ const transportationMode = new mongoose.Schema({
     },
     numOfSeats : {
         type: Number
-    },
-    availableSeats : {
-        type: Number
     }
 });
 
