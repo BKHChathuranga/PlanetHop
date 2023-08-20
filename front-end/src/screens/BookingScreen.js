@@ -55,6 +55,11 @@ const BookingScreen = ({ navigation }) => {
 
     booking(data)
       .then((res) => {
+        setCurrentLocation("");
+        setDestination(""), setDay(1);
+        setMonth(1);
+        setYear(2160);
+        setMode("");
         navigation.navigate("BookingConfirmed", {
           mode: modes.find((x) => x._id == mode).name,
           to: locations.find((x) => x._id == destination).name,
@@ -62,11 +67,7 @@ const BookingScreen = ({ navigation }) => {
           date: new Date(`${year}-${month}-${day}`).toDateString(),
           price : calculatePrice()
         });
-        setCurrentLocation("");
-        setDestination(""), setDay(1);
-        setMonth(1);
-        setYear(2160);
-        setMode("");
+        
       })
       .catch((err) => {
         console.log(err);
