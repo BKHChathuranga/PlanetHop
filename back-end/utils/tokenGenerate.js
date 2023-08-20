@@ -5,7 +5,7 @@ require("dotenv").config();
 exports.accessTokenGenerator = async (user) => {
   try {
     const accessToken = jwt.sign(
-      { userId: user._id, firstName: user.firstName, lastName: user.lastName },
+      { userId: user._id, firstName: user.firstName, lastName: user.lastName, npn: user.npn },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     );
@@ -18,7 +18,7 @@ exports.accessTokenGenerator = async (user) => {
 exports.refreshTokenGenerator = async (user) => {
   try {
     const refreshToken = jwt.sign(
-      { userId: user._id, firstName: user.firstName, lastName: user.lastName },
+      { userId: user._id, firstName: user.firstName, lastName: user.lastName, npn: user.npn },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
