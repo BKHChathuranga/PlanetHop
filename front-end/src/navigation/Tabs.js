@@ -9,6 +9,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import BookingScreen from '../screens/BookingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import BookingDetails from '../screens/BookingDetails';
+import BookingConfirmed from '../screens/BookingConfirmed';
 
 const Tab = createBottomTabNavigator();
 
@@ -101,6 +102,11 @@ const Tabs = () => {
             }}></Tab.Screen>
             <Tab.Screen name="bookingDetail" component={BookingDetails} options={{
                 tabBarItemStyle: { display: 'none' },
+                headerShown: false,
+            }}></Tab.Screen>
+            <Tab.Screen name="BookingConfirmed" component={BookingConfirmed} options={{
+                tabBarItemStyle: { display: 'none' },
+                tabBarStyle: { display: 'none' },
                 headerShown: false,
             }}></Tab.Screen>
         </Tab.Navigator>

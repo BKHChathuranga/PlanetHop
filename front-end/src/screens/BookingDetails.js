@@ -36,7 +36,7 @@ const BookingDetails = ({ route, navigation }) => {
     }
 
     const cancelBooking = async() => {
-        CancelBooking().then((res) => {
+        CancelBooking(route.params._id).then((res) => {
             navigation.navigate("profile")
         })
     }
