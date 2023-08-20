@@ -14,7 +14,8 @@ const HEIGHT = Dimensions.get("window").height;
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
-const BookingConfirmed = ({ navigation }) => {
+const BookingConfirmed = ({ navigation, route }) => {
+  const {mode, date,from,to, price} = route.params;
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
@@ -45,22 +46,26 @@ const BookingConfirmed = ({ navigation }) => {
         />
       </View>
       <View style={styles.container2}>
-        <Text style={styles.fontStyle1}>SpaceX 19001</Text>
+        <Text style={styles.fontStyle1}>{mode}</Text>
         <View style={styles.row}>
           <Text style={styles.fontStyle2}>Date&ensp;&ensp;&ensp;:&ensp;</Text>
-          <Text style={styles.fontStyle3}>August 22, 2165</Text>
+          <Text style={styles.fontStyle3}>{date}</Text>
         </View>
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <Text style={styles.fontStyle2}>Time&ensp;&ensp;&ensp;:&ensp;</Text>
           <Text style={styles.fontStyle3}>18 : 30 Hrs</Text>
-        </View>
+        </View> */}
         <View style={styles.row}>
           <Text style={styles.fontStyle2}>From&ensp;&ensp;&ensp;:&ensp;</Text>
-          <Text style={styles.fontStyle3}>Earth</Text>
+          <Text style={styles.fontStyle3}>{from}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.fontStyle2}>To&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;:&ensp;</Text>
-          <Text style={styles.fontStyle3}>Saturn</Text>
+          <Text style={styles.fontStyle3}>{to}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.fontStyle2}>Price&ensp;&ensp;&ensp;:&ensp;</Text>
+          <Text style={styles.fontStyle3}>${price}</Text>
         </View>
       </View>
       <Text style={styles.fontStyle4}></Text>
@@ -136,6 +141,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     paddingLeft: 55,
     fontFamily: "Poppins_500Medium",
+    textAlign: "center"
   },
   fontStyle2: {
     paddingTop: 15,
