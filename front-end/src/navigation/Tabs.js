@@ -2,11 +2,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import RegistrationScreen from '../screens/RegistrationScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import WelcomeScreen from '../screens/WelcomeScreen';
+import BookingScreen from '../screens/BookingScreen';
 import LoginScreen from '../screens/LoginScreen';
 
 const Tab = createBottomTabNavigator();
@@ -71,7 +71,9 @@ const Tabs = () => {
                     </View>
                 ),
             }}></Tab.Screen>
-            <Tab.Screen name='register' component={RegistrationScreen} options={{
+            <Tab.Screen name='register' component={BookingScreen} options={{
+                tabBarItemStyle: {display: 'none'},
+                tabBarStyle: {display: 'none'},
                 headerShown: false,
                 tabBarIcon: ({ focused }) => (
                     <MaterialCommunityIcons name="rocket-outline" size={40} color="#fff" />
