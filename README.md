@@ -1,7 +1,6 @@
-
 # Planetory Transportation Booking Application Backend
 
-Welcome to the Planetary Transportation Booking Application Backend! This backend serves as the server-side component for a booking application. It provides the necessary APIs and functionalities to handle booking-related operations with sign in functionalities.
+Welcome to the Planetary Transportation Booking Application Backend! This backend serves as the server-side component for a booking application. It provides the necessary APIs and functionalities to handle booking-related operations with sign-in functionalities.
 
 ## Table of Contents
 
@@ -23,33 +22,83 @@ Welcome to the Planetary Transportation Booking Application Backend! This backen
       - [Installation](#installation)
       - [Configuration](#configuration)
     - [Usage](#usage)
-      - [API Endpoints](#api-endpoints)
       - [Authentication](#authentication)
     - [Folder Structure](#folder-structure)
     - [Dependencies](#dependencies)
-    - [Contributing](#contributing)
-    - [License](#license)
 
 ## Frontend
 
 ## Backend
 
-## Getting Started
+### Getting Started
 
-### Prerequisites
+#### Prerequisites
 
 Before running this application, ensure you have the following prerequisites:
 
 - Node.js (version >= 14.0.0)
 - npm (Node Package Manager)
 
-### Installation
+#### Installation
 
 1. Clone this repository to your local machine:
-
 ```bash
 git clone https://github.com/BKHChathuranga/PlanetHop.git
 ```
+2. Navigate to the project directory:
+```bash
+cd PlanetHop
+```
+3. Install the required dependencies:
+```bash
+npm install
+```
 
+#### Configuration
 
+1. Create a .env file in the back-end directory based on the provided environment variables.
 
+### Usage
+
+#### Authentication
+
+In this Planetary Transportation Booking Application Backend, we have implemented a secure authentication system using refresh token-based JWT (JSON Web Tokens) authentication for users. This approach enhances security and ensures that only authorized users can access the application's resources.
+
+### Folder Structure
+```
+.
+├── controllers
+├── models
+├── routes
+├── middleware
+├── config
+├── utils
+├── .env
+├── .gitignore
+├── server.js
+└── package.json
+```
+
+- `controllers`: Contains the logic to handle different endpoints.
+- `models`: Defines the data models and schema.
+- `routes`: Defines the API routes and their corresponding controller methods.
+- `middleware`: Houses middleware functions for tasks such as authentication, validation, etc.
+- `config`: Contains configuration files (e.g., database connection).
+- `utils`: Utility functions and helper modules.
+- `server.js`: Entry point of the application.
+
+### Dependencies
+
+The backend application uses the following main dependencies:
+
+- **Express**: A powerful web framework that facilitates the handling of API requests.
+- **Mongoose**: A versatile Object Data Modeling (ODM) library designed specifically for MongoDB.
+- **dotenv**: A utility that streamlines the process of loading environment variables from a .env file.
+- **bcrypt**: A dependable package for hashing passwords securely.
+- **body-parser**: Middleware that simplifies parsing of request bodies.
+- **cors**: A package that allows cross-origin resource sharing, crucial for modern web applications.
+- **jsonwebtoken**: A tool for generating and validating JSON Web Tokens (JWT) for user authentication.
+- **nodemailer**: A solution for sending emails from your application.
+- **nodemon**: A development utility that automatically restarts the server on code changes.
+- **stripe**: A library that integrates with the Stripe payment platform.
+- **winston**: A logging library that helps manage application logs effectively.
