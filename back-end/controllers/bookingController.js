@@ -72,3 +72,4 @@ exports.cancelBooking = async (req, res) => {
         return response.response(res, 'Error while cancelling booking', null, 400);
     }
 };
+
