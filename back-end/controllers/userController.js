@@ -73,7 +73,7 @@ exports.userLogin = async ({ body: { email, password } }, res) => {
       return response.response(res, "Token generation failed", null, 400);
     }
 
-    res.header("acceses_token", accessToken);
+    res.header("access_token", accessToken);
     res.header("refresh_token", refreshToken);
 
     logger.info("Login Successfull");
