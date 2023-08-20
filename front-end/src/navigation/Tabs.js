@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import BookingScreen from '../screens/BookingScreen';
 import LoginScreen from '../screens/LoginScreen';
+import BookingConfirmed from '../screens/BookingConfirmed';
 
 const Tab = createBottomTabNavigator();
 
@@ -71,7 +72,7 @@ const Tabs = () => {
                     </View>
                 ),
             }}></Tab.Screen>
-            <Tab.Screen name='register' component={BookingScreen} options={{
+            <Tab.Screen name='booking' component={BookingScreen} options={{
                 tabBarItemStyle: {display: 'none'},
                 tabBarStyle: {display: 'none'},
                 headerShown: false,
@@ -94,6 +95,11 @@ const Tabs = () => {
                 ),
             }}></Tab.Screen>
             <Tab.Screen name="login" component={LoginScreen} options={{
+                tabBarItemStyle: { display: 'none' },
+                tabBarStyle: { display: 'none' },
+                headerShown: false,
+            }}></Tab.Screen>
+            <Tab.Screen name="BookingConfirmed" component={BookingConfirmed} options={{
                 tabBarItemStyle: { display: 'none' },
                 tabBarStyle: { display: 'none' },
                 headerShown: false,

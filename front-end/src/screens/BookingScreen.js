@@ -7,6 +7,8 @@ import SearchOptionInfo from "../components/SearchOptionInfo";
 import planetDetails from "../constants/PlanetDetails";
 import { getTransportationMode } from "../services/TransportationMode";
 import { getLocations } from "../services/LocationService";
+import { booking } from "../services/BookingService";
+import { planetIds } from "../constants/PlanetInfo";
 
 const dimensions = Dimensions.get("screen");
 
@@ -41,11 +43,35 @@ const BookingScreen = ({ navigation }) => {
       });
   }, []);
 
-  // const validate = () => {
-  // if(mode != 0 && destination!= 0 && currentLocation != 0){
-  //   setIsBookDisabled(false)
-  // }
-  // }
+  const book = () => {
+    const data = {
+      departureTime: new Date(`${year}-${month}-${day}`).toISOString(),
+      totalPrice: calculatePrice(),
+      transportationMode: modes.find(x => x._id == mode).name,
+      from: locations.find(x => x._id == currentLocation).name,
+      to: locations.find(x => x._id == destination).name,
+      status: 'completed'
+    }
+
+    booking(data).then(res => {
+      navigation.navigate({name : "BookingConfirmed"})
+      setCurrentLocation("")
+      setDestination(""),
+      setDay(1)
+      setMonth(1)
+      setYear(2160)
+      setMode("")
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  const calculatePrice = () => {
+    let price,distance;
+    distance = Math.abs(locations.find(x => x._id == currentLocation).distanceFromSun - locations.find(x => x._id == destination).distanceFromSun)
+    price  = distance * modes.find(x => x._id == mode).pricePerKm
+    return price
+  }
 
   return (
     <View style={{ ...styles.container, paddingTop: insets.top, paddingBottom: insets.bottom }}>
@@ -139,17 +165,28 @@ const BookingScreen = ({ navigation }) => {
               >
                 <Picker.Item label="---" value={0} color="#791AF680" />
                 {modes.map((item, idx) => (
-                  <Picker.Item label={item.name} value={item.name} color="#791AF6" key={idx} />
+                  <Picker.Item label={item.name} value={item._id} color="#791AF6" key={idx} />
                 ))}
               </Picker>
             </View>
           </View>
         </View>
-        <SearchOptionInfo bullets={planetDetails.mars.bullets} desc={planetDetails.mars.desc} price={560} />
+        {
+          (currentLocation != 0 || currentLocation != "") &&  (destination != 0 || destination != "") && (mode != 0 || mode != "") && (
+            
+          <SearchOptionInfo bullets={
+            destination == planetIds.Jupiter? planetDetails.jupiter.bullets : destination == planetIds.Neptune?  planetDetails.neptune.bullets : destination == planetIds.Saturn? planetDetails.saturn.bullets : destination == planetIds.Uranus? planetDetails.uranus.bullets: <></>
+          } desc={
+            destination == planetIds.Jupiter? planetDetails.jupiter.desc : destination == planetIds.Neptune?  planetDetails.neptune.desc : destination == planetIds.Saturn? planetDetails.saturn.desc : destination == planetIds.Uranus? planetDetails.uranus.desc: <></>
+          } price={calculatePrice()} />
+          )
+        }
+        
       </ScrollView>
       <TouchableOpacity
         style={!(mode != 0 && destination != 0 && currentLocation != 0) ? styles.bookBtnDisabled : styles.bookBtnActive}
         disabled={mode != 0 && destination != 0 && currentLocation != 0 ? false : true}
+        onPress={_ => book()}
       >
         <Text style={!(mode != 0 && destination != 0 && currentLocation != 0) ? styles.bookTextDisabled : styles.bookTextActive}>Book the Trip</Text>
       </TouchableOpacity>
@@ -234,7 +271,7 @@ const styles = StyleSheet.create({
   },
   date: {
     flexDirection: "row",
-    paddingVertical: 10,
+    paddingTop: 2,
     justifyContent: "center",
   },
   textInput: {
@@ -244,6 +281,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingHorizontal: 20,
     borderRadius: 15,
+    textAlign: "center"
   },
   inputGroup: {
     paddingHorizontal: 15,
