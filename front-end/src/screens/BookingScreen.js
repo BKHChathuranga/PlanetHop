@@ -20,7 +20,7 @@ const BookingScreen = ({navigation}) => {
   return (
     <View style={{ ...styles.container, paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backBtn} onPress={_ => navigation.goBack()}>
           <AntDesign name="arrowleft" size={20} color={"#FFFEFE"} />
         </TouchableOpacity>
         <Text style={styles.title}>Book your next trip</Text>
@@ -40,6 +40,7 @@ const BookingScreen = ({navigation}) => {
                 itemStyle={styles.pickerItem}
                 placeholder="Select the Current Location"
               >
+                <Picker.Item label="---" value={0} color="#791AF680" />
                 <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
                 <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
                 <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
@@ -60,6 +61,7 @@ const BookingScreen = ({navigation}) => {
                 itemStyle={styles.pickerItem}
                 placeholder="Select the Current Location"
               >
+                <Picker.Item label="---" value={0} color="#791AF680" />
                 <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
                 <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
                 <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
@@ -80,6 +82,7 @@ const BookingScreen = ({navigation}) => {
                 itemStyle={styles.pickerItem}
                 placeholder="Select the Current Location"
               >
+                <Picker.Item label="---" value={0} color="#791AF680" />
                 <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
                 <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
                 <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
@@ -100,6 +103,7 @@ const BookingScreen = ({navigation}) => {
                 itemStyle={styles.pickerItem}
                 placeholder="Select the Current Location"
               >
+                <Picker.Item label="---" value={0} color="#791AF680" />
                 <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
                 <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
                 <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
