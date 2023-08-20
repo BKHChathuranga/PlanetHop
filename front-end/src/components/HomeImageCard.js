@@ -15,7 +15,7 @@ import {
   Poppins_500Medium,
 } from "@expo-google-fonts/poppins";
 
-const HomeImageCard = () => {
+const HomeImageCard = ({image,header,isNews}) => {
   let [fontsLoaded] = useFonts({
     Poppins_700Bold,
     Poppins_500Medium,
@@ -28,11 +28,11 @@ const HomeImageCard = () => {
     <View style={styles.cardContainer}>
       <Image
         style={styles.image}
-        source={require("./../../assets/starShip.png")}
+        source={image}
         contentFit="contain"
       />
       <View style={styles.overlayView}/>
-      <Text style={styles.cardText}>star-Ship</Text>
+      {isNews ? <Text style={styles.cardNewsText}>{header}</Text> : <Text style={styles.cardText}>{header}</Text> }
     </View>
   );
 };
@@ -64,6 +64,13 @@ const styles = StyleSheet.create({
     fontSize:18,
     color:"white",
     textAlign:"center"
+  },
+  cardNewsText:{
+    fontFamily:"Poppins_500Medium",
+    fontSize:14,
+    color:"white",
+    textAlign:"center",
+    lineHeight:25
   }
 });
 export default HomeImageCard;
