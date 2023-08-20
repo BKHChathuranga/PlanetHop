@@ -1,26 +1,56 @@
-import React, { useState } from "react";
-import { Dimensions, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import SearchOptionInfo from "../components/SearchOptionInfo";
 import planetDetails from "../constants/PlanetDetails";
+import { getTransportationMode } from "../services/TransportationMode";
+import { getLocations } from "../services/LocationService";
 
 const dimensions = Dimensions.get("screen");
 
-const BookingScreen = ({navigation}) => {
+const BookingScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
 
   const [currentLocation, setCurrentLocation] = useState("");
   const [destination, setDestination] = useState("");
-  const [depatureDate, setDepatureDate] = useState("");
+  const [day, setDay] = useState(1);
+  const [month, setMonth] = useState(1);
+  const [year, setYear] = useState(2160);
   const [mode, setMode] = useState("");
   const [isBookDisabled, setIsBookDisabled] = useState(true);
+  const [modes, setModes] = useState([]);
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    getTransportationMode()
+      .then((res) => {
+        setModes(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    getLocations()
+      .then((res) => {
+        setLocations(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // const validate = () => {
+    // if(mode != 0 && destination!= 0 && currentLocation != 0){
+    //   setIsBookDisabled(false)
+    // }
+  // }
 
   return (
     <View style={{ ...styles.container, paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={_ => navigation.goBack()}>
+        <TouchableOpacity style={styles.backBtn} onPress={(_) => navigation.goBack()}>
           <AntDesign name="arrowleft" size={20} color={"#FFFEFE"} />
         </TouchableOpacity>
         <Text style={styles.title}>Book your next trip</Text>
@@ -41,16 +71,15 @@ const BookingScreen = ({navigation}) => {
                 placeholder="Select the Current Location"
               >
                 <Picker.Item label="---" value={0} color="#791AF680" />
-                <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
-                <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
-                <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
-                <Picker.Item label="Neptune" value={"Neptune"} color="#791AF6" />
+                {locations.map((item, idx) => (
+                  <Picker.Item label={item.name} value={item._id} color="#791AF6" key={idx} />
+                ))}
               </Picker>
             </View>
           </View>
 
           <View style={styles.dropdown}>
-            <Text style={styles.label}>Current Location</Text>
+            <Text style={styles.label}>Destination Location</Text>
             <View style={Platform.OS === "android" ? styles.picker : ""}>
               <Picker
                 selectedValue={destination}
@@ -62,37 +91,33 @@ const BookingScreen = ({navigation}) => {
                 placeholder="Select the Current Location"
               >
                 <Picker.Item label="---" value={0} color="#791AF680" />
-                <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
-                <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
-                <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
-                <Picker.Item label="Neptune" value={"Neptune"} color="#791AF6" />
+                {locations.filter(x => x._id != currentLocation).map((item, idx) => (
+                  <Picker.Item label={item.name} value={item._id} color="#791AF6" key={idx} />
+                ))}
               </Picker>
             </View>
           </View>
 
           <View style={styles.dropdown}>
-            <Text style={styles.label}>Current Location</Text>
-            <View style={Platform.OS === "android" ? styles.picker : ""}>
-              <Picker
-                selectedValue={depatureDate}
-                onValueChange={(value) => setDepatureDate(value)}
-                dropdownIconColor={"#791AF6"}
-                dropdownIconRippleColor={"#791AF6"}
-                selectionColor={"#B36EFA1F"}
-                itemStyle={styles.pickerItem}
-                placeholder="Select the Current Location"
-              >
-                <Picker.Item label="---" value={0} color="#791AF680" />
-                <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
-                <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
-                <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
-                <Picker.Item label="Neptune" value={"Neptune"} color="#791AF6" />
-              </Picker>
+            <Text style={styles.label}>Depature Date</Text>
+            <View style={styles.date}>
+              <View style={styles.inputGroup}>
+                <TextInput keyboardType="number-pad" style={styles.textInput} value={`${day}`} onChangeText={(value) => setDay(value)} />
+                <Text style={{ ...styles.label, textAlign: "center", paddingTop: 5 }}>Day</Text>
+              </View>
+              <View style={styles.inputGroup}>
+                <TextInput keyboardType="number-pad" style={styles.textInput} value={`${month}`} onChangeText={(value) => setMonth(value)} />
+                <Text style={{ ...styles.label, textAlign: "center", paddingTop: 5 }}>Month</Text>
+              </View>
+              <View style={styles.inputGroup}>
+                <TextInput keyboardType="number-pad" style={styles.textInput} value={`${year}`} onChangeText={(value) => setYear(value)} />
+                <Text style={{ ...styles.label, textAlign: "center", paddingTop: 5 }}>Year</Text>
+              </View>
             </View>
           </View>
 
           <View style={styles.dropdown}>
-            <Text style={styles.label}>Current Location</Text>
+            <Text style={styles.label}>Transportation Mode</Text>
             <View style={Platform.OS === "android" ? styles.picker : ""}>
               <Picker
                 selectedValue={mode}
@@ -104,18 +129,17 @@ const BookingScreen = ({navigation}) => {
                 placeholder="Select the Current Location"
               >
                 <Picker.Item label="---" value={0} color="#791AF680" />
-                <Picker.Item label="Mars" value={"Mars"} color="#791AF6" />
-                <Picker.Item label="Earth" value={"Earth"} color="#791AF6" />
-                <Picker.Item label="Saturn" value={"Saturn"} color="#791AF6" />
-                <Picker.Item label="Neptune" value={"Neptune"} color="#791AF6" />
+                {modes.map((item, idx) => (
+                  <Picker.Item label={item.name} value={item.name} color="#791AF6" key={idx} />
+                ))}
               </Picker>
             </View>
           </View>
         </View>
         <SearchOptionInfo bullets={planetDetails.mars.bullets} desc={planetDetails.mars.desc} price={560} />
       </ScrollView>
-      <TouchableOpacity style={isBookDisabled ? styles.bookBtnDisabled : styles.bookBtnActive} disabled={isBookDisabled}>
-        <Text style={isBookDisabled ? styles.bookTextDisabled : styles.bookTextActive}>Book the Trip</Text>
+      <TouchableOpacity style={!(mode != 0 && destination!= 0 && currentLocation != 0)? styles.bookBtnDisabled : styles.bookBtnActive} disabled={(mode != 0 && destination!= 0 && currentLocation != 0)? false: true}>
+        <Text style={!(mode != 0 && destination!= 0 && currentLocation != 0)? styles.bookTextDisabled : styles.bookTextActive}>Book the Trip</Text>
       </TouchableOpacity>
     </View>
   );
@@ -196,4 +220,20 @@ const styles = StyleSheet.create({
   dropdown: {
     paddingVertical: 5,
   },
+  date: {
+    flexDirection: "row",
+    paddingVertical: 10,
+    justifyContent: "center"
+  },
+  textInput: {
+    height: 50,
+    color: "#FFFEFE",
+    borderColor: "#791AF6",
+    borderWidth: 2,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+  },
+  inputGroup: {
+    paddingHorizontal: 15
+  }
 });
