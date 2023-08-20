@@ -13,7 +13,7 @@ import SocialLoginButton from '../components/SocialLoginButton';
 import { UserRegister } from '../services/AuthService';
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
-import { nameValidator, nicValidator, phoneValidator } from '../helpers/inputValidator'
+import { nameValidator, npnValidator } from '../helpers/inputValidator'
 
 const RegistrationScreen = ({ navigation }) => {
 
@@ -21,13 +21,13 @@ const RegistrationScreen = ({ navigation }) => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
-  const [name, setName] = useState({ value: '', error: '' });
+  const [fName, setFName] = useState({ value: '', error: '' });
+  const [lName, setLName] = useState({ value: '', error: '' });
   const [npn, setNpn] = useState({ value: '', error: '' });
   const [email, setEmail] = useState({ value: '', error: '' });
   const [pwd, setPwd] = useState({ value: '', error: '' });
   const [cpwd, setCpwd] = useState({ value: '', error: '' });
   const [isChecked, setChecked] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState({ value: '', error: '' })
 
   let [fontsLoaded] = useFonts({
     Poppins_800ExtraBold,
@@ -39,44 +39,42 @@ const RegistrationScreen = ({ navigation }) => {
   }
 
   const handleRegister = async () => {
-    // const NameError = nameValidator(name.value)
-    // const emailError = emailValidator(email.value)
-    // const npnError = nicValidator(npn.value)
-    // const phoneError = phoneValidator(phone.value)
-    // const passwordError = passwordValidator(pwd.value)
 
-    console.log("Hii")
+    const fNameValidator = nameValidator(fName.value)
+    const lNameValidator = nameValidator(lName.value)
+    const emailError = emailValidator(email)
+    const npnError = npnValidator(npn)
+    const passwordError = passwordValidator(pwd.value)
 
-    // if (NameError || emailError || npnError || passwordError) {
-    //   setName({ ...name, error: NameError })
-    //   setEmail({ ...email, error: emailError })
-    //   setNpn({ ...npn, error: npnError })
-    //   setPwd({ ...pwd, error: passwordError })
-    //   if (pwd !== cpwd) {
-    //     setConfirmPassword("");
-    //     const confirmPasswordError = "Passwords do not match"
-    //     setCpwd({ ...cpwd, error: confirmPasswordError })
-    //     return
-
-    //   }
-    //   return
-    // } else {
+    if (fNameValidator || lNameValidator || emailError || npnError || passwordError) {
+      setFName({ ...fName, error: fNameValidator })
+      setLName({ ...lName, error: lNameValidator })
+      setEmail({ ...email, error: emailError })
+      setNpn({ ...npn, error: npnError })
+      setPwd({ ...pwd, error: passwordError })
+      return ''
+    }
+     else if (pwd.value !== cpwd.value) {
+        const confirmPasswordError = "Passwords do not match"
+        setCpwd({ ...cpwd, error: confirmPasswordError })
+        return ''
+    }
+     else {
       try {
         const data = {
-          firstName: name,
-          lastName: name,
+          firstName: fName,
+          lastName: lName,
           npn: npn,
           email: email,
-          password: pwd.value,
-          phoneNumber: phoneNumber
+          password: pwd.value
         }
         const res = await UserRegister(data);
         console.log('resssss', res)
-        console.log("valueee",data)
+        console.log("valueee", data)
       } catch (err) {
         console.log("Error in registering")
       }
-    // }
+    }
   }
 
   return (
@@ -90,12 +88,12 @@ const RegistrationScreen = ({ navigation }) => {
               Fill Your Information Below or Register {"\n"} with your Social accounts
             </Text>
           </View>
-          <Inputbox label={"Name"} placeholder={"Name"} secureTextEntry={false} IconName={"user"} style={{ flex: 1 }} setInput={setName} error={!!name.error} errorText={name.error} />
-          <Inputbox label={"National Planetary Number (NPN)"} placeholder={"npn"} secureTextEntry={false} IconName={"idcard"} style={{ flex: 1 }} setInput={setNpn} error={!!npn.error} errorText={npn.error} />
-          <Inputbox label={"Email"} placeholder={"Email"} secureTextEntry={false} IconName={"mail"} style={{ flex: 1 }} setInput={setEmail} error={!!email.error} errorText={email.error} />
-          <Inputbox label={"Phone Number"} placeholder={"Phone Number"} secureTextEntry={false} IconName={"lock"} style={{ flex: 1 }} setInput={setPhoneNumber} error={!!phoneNumber.error} errorText={phoneNumber.error} />
-          <Inputbox label={"Password"} placeholder={"Password"} secureTextEntry={true} IconName={"lock"} style={{ flex: 1 }} setInput={setPwd} error={!!pwd.error} errorText={pwd.error} />
-          <Inputbox label={"Confirm Password"} placeholder={"Confirm Password"} secureTextEntry={true} IconName={"lock"} style={{ flex: 1 }} setInput={setCpwd} error={!!cpwd.error} errorText={cpwd.error} />
+          <Inputbox label={"First Name"} placeholder={"First Name"} secureTextEntry={false} IconName={"user"} input={fName.value} style={{ flex: 1 }} setInput={setFName} error={!!fName.error} errorText={fName.error} />
+          <Inputbox label={"Last Name"} placeholder={"Last Name"} secureTextEntry={false} IconName={"user"} input={lName.value} style={{ flex: 1 }} setInput={setLName} error={!!lName.error} errorText={lName.error} />
+          <Inputbox label={"National Planetary Number (NPN)"} placeholder={"npn"} secureTextEntry={false} IconName={"idcard"} input={npn.value} style={{ flex: 1 }} setInput={setNpn} error={!!npn.error} errorText={npn.error} />
+          <Inputbox label={"Email"} placeholder={"Email"} secureTextEntry={false} IconName={"mail"} input={email.value} style={{ flex: 1 }} setInput={setEmail} error={!!email.error} errorText={email.error} />
+          <Inputbox label={"Password"} placeholder={"Password"} secureTextEntry={true} IconName={"lock"} input={pwd.value} style={{ flex: 1 }} setInput={setPwd} error={!!pwd.error} errorText={pwd.error} />
+          <Inputbox label={"Confirm Password"} placeholder={"Confirm Password"} secureTextEntry={true} IconName={"lock"} input={cpwd.value} style={{ flex: 1 }} setInput={setCpwd} error={!!cpwd.error} errorText={cpwd.error} />
           <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 30 }}>
             <Checkbox style={styles.checkbox} value={isChecked} onValueChange={setChecked} color={'#B36EFA'} />
             <Text style={styles.paragraph}>Agree with <Text style={{ color: '#B36EFA', fontFamily: 'Poppins_800ExtraBold', textDecorationLine: 'underline' }}>Terms & Condition</Text></Text>

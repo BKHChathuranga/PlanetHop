@@ -1,10 +1,10 @@
 export function nameValidator(name) {
-  if (!name) return "Name can't be empty."
+  if (name === '') return "Name can't be empty."
   return ''
 }
 
 export function npnValidator(npn) {
-  if (!npn) return "NIP can't be empty."
+  if (npn === '') return "NIP can't be empty."
   return ''
 }
 

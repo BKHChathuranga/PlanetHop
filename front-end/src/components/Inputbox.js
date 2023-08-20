@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 import { AntDesign } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../hook/useTogglePasswordVisibility ';
 
-const Inputbox = ({ label, placeholder, secureTextEntry, IconName, input, setInput, canEdit, keyboard }) => {
+const Inputbox = ({ label, placeholder, secureTextEntry, IconName, input, setInput, canEdit, keyboard, error, errorText }) => {
 
     const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
@@ -24,7 +24,7 @@ const Inputbox = ({ label, placeholder, secureTextEntry, IconName, input, setInp
     return (
         <View style={styles.container}>
             <Text style={styles.inputHeader}>{label}</Text>
-            <View style={styles.inputGroup}>
+            <View style={error? [styles.inputGroup, {borderColor: 'red'}] : styles.inputGroup}>
                 <AntDesign name={IconName} size={22} style={[styles.icon, { color: "#791AF6" }]} />
                 {secureTextEntry ? (
                     <>
@@ -53,6 +53,9 @@ const Inputbox = ({ label, placeholder, secureTextEntry, IconName, input, setInp
                     />
                 )}
             </View>
+            {error ?
+                <Text style={styles.ErrorText}>{errorText}</Text> : null
+            }
         </View>
     )
 }
@@ -91,6 +94,10 @@ const styles = StyleSheet.create({
     visibilityEye: {
         paddingVertical: 10,
         paddingHorizontal: 20
+    },
+    ErrorText: {
+        color: 'red',
+        fontFamily: 'Poppins_400Regular',
     }
 })
 
