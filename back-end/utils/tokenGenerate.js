@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const logger = require("../utils/logger");
 const RefreshToken = require("../models/refreshToken");
 require("dotenv").config();
 

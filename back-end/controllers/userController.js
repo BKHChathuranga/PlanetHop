@@ -3,6 +3,7 @@ const response = require('../utils/response');
 const bcrypt = require('bcrypt');
 const logger = require('../utils/logger');
 const { emailValidator } = require('../utils/validation');
+const { accessTokenGenerator, refreshTokenGenerator } = require('../utils/tokenGenerate');
 
 exports.register = async (req, res) => {
   try {

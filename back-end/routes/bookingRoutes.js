@@ -3,9 +3,9 @@ const router = app.Router();
 
 const bookingController = require('../controllers/bookingController');
 
-router.post('/createBooking', bookingController.createBooking);
-router.get('/getBookings/:id', bookingController.getBookings);
-router.put('/cancelBooking', bookingController.cancelBooking);
+router.post('/create-booking', bookingController.createBooking);
+router.get('/get-bookings/:id', bookingController.getBookings);
+router.put('/cancel-booking', bookingController.cancelBooking);
 
 
 module.exports = router;
