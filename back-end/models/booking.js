@@ -26,10 +26,6 @@ const bookingSchema = new mongoose.Schema({
         type: Date,
         default: () => new Date(Date.now() + 3600000)
     },
-    npn: {
-        type: String,
-        required: [true, 'NPN is required']
-    },
     status: {
         type: String,
         enum: ['upcoming', 'cancelled', 'completed'],

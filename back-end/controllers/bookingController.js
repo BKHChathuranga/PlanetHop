@@ -53,20 +53,23 @@ exports.cancelBooking = async (req, res) => {
     try {
         const { id } = req.body;
 
-        const user = await validateUser(id);
-        if (!user) {
-            return response.response(res, 'User not found', null, 404);
-        }
-
-        const cancelBooking = await Booking.findOneAndUpdate({ npn: { $in: user.npn } }, { status: 'cancelled' }, { new: true });
-
-        if (!cancelBooking) {
+        const bookingToCancel = await Booking.findById(id);
+        
+        if (!bookingToCancel) {
             logger.warn('Booking not found');
             return response.response(res, 'Booking not found', null, 404);
         }
 
+        if (bookingToCancel.status === 'cancelled') {
+            logger.warn('Booking is already cancelled');
+            return response.response(res, 'Booking is already cancelled', null, 400);
+        }
+
+        bookingToCancel.status = 'cancelled';
+        const updatedBooking = await bookingToCancel.save();
+
         logger.info('Booking cancelled successfully');
-        return response.response(res, 'Booking cancelled successfully', cancelBooking, 200);
+        return response.response(res, 'Booking cancelled successfully', updatedBooking, 200);
     } catch (error) {
         logger.error('Error while cancelling booking', error);
         return response.response(res, 'Error while cancelling booking', null, 400);
