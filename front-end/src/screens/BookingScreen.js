@@ -42,9 +42,9 @@ const BookingScreen = ({ navigation }) => {
   }, []);
 
   // const validate = () => {
-    // if(mode != 0 && destination!= 0 && currentLocation != 0){
-    //   setIsBookDisabled(false)
-    // }
+  // if(mode != 0 && destination!= 0 && currentLocation != 0){
+  //   setIsBookDisabled(false)
+  // }
   // }
 
   return (
@@ -77,6 +77,13 @@ const BookingScreen = ({ navigation }) => {
               </Picker>
             </View>
           </View>
+          {currentLocation != 0 && (
+            <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-end"}}>
+              <TouchableOpacity style={styles.exploreBtn}>
+                <Text style={styles.exploreText}>{`Explore ${locations.find((x) => x._id == currentLocation).name}`}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           <View style={styles.dropdown}>
             <Text style={styles.label}>Destination Location</Text>
@@ -91,9 +98,11 @@ const BookingScreen = ({ navigation }) => {
                 placeholder="Select the Current Location"
               >
                 <Picker.Item label="---" value={0} color="#791AF680" />
-                {locations.filter(x => x._id != currentLocation).map((item, idx) => (
-                  <Picker.Item label={item.name} value={item._id} color="#791AF6" key={idx} />
-                ))}
+                {locations
+                  .filter((x) => x._id != currentLocation)
+                  .map((item, idx) => (
+                    <Picker.Item label={item.name} value={item._id} color="#791AF6" key={idx} />
+                  ))}
               </Picker>
             </View>
           </View>
@@ -138,8 +147,11 @@ const BookingScreen = ({ navigation }) => {
         </View>
         <SearchOptionInfo bullets={planetDetails.mars.bullets} desc={planetDetails.mars.desc} price={560} />
       </ScrollView>
-      <TouchableOpacity style={!(mode != 0 && destination!= 0 && currentLocation != 0)? styles.bookBtnDisabled : styles.bookBtnActive} disabled={(mode != 0 && destination!= 0 && currentLocation != 0)? false: true}>
-        <Text style={!(mode != 0 && destination!= 0 && currentLocation != 0)? styles.bookTextDisabled : styles.bookTextActive}>Book the Trip</Text>
+      <TouchableOpacity
+        style={!(mode != 0 && destination != 0 && currentLocation != 0) ? styles.bookBtnDisabled : styles.bookBtnActive}
+        disabled={mode != 0 && destination != 0 && currentLocation != 0 ? false : true}
+      >
+        <Text style={!(mode != 0 && destination != 0 && currentLocation != 0) ? styles.bookTextDisabled : styles.bookTextActive}>Book the Trip</Text>
       </TouchableOpacity>
     </View>
   );
@@ -223,7 +235,7 @@ const styles = StyleSheet.create({
   date: {
     flexDirection: "row",
     paddingVertical: 10,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   textInput: {
     height: 50,
@@ -234,6 +246,20 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   inputGroup: {
-    paddingHorizontal: 15
-  }
+    paddingHorizontal: 15,
+  },
+  exploreBtn: {
+    borderRadius: 15,
+    borderWidth: 2,
+    backgroundColor: "#791AF6",
+    width: 120,
+    paddingVertical: 10,
+    justifyContent: "flex-end",
+  },
+  exploreText: {
+    color: "#FFFEFE",
+    textAlign: "center",
+    fontFamily: "Poppins_400Regular",
+    fontSize: 12
+  },
 });
