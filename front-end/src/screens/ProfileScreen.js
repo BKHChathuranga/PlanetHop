@@ -22,6 +22,7 @@ const ProfileScreen = () => {
     function getBookings() {
         GetAllBookings().then((res) => {
             setAllBookings(res.data);
+            console.log(res)
         }).catch((err) => {
             console.log(err.message)
         })
@@ -91,13 +92,15 @@ const ProfileScreen = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
-                    {allBookings.data?.map(value => {
-                        {
-                            if (value.status === selectedStatusHeader) {
-                                return <BookingCard key={value._id} from={value.from} to={value.to} mode={value.transportationMode} date={value.date} time={value.departureTime} status={value.status} />
+                    <ScrollView>
+                        {allBookings.data?.map(value => {
+                            {
+                                if (value.status === selectedStatusHeader) {
+                                    return <BookingCard key={value._id} from={value.from} to={value.to} mode={value.transportationMode} date={value.date} time={value.departureTime} status={value.status} />
+                                }
                             }
-                        }
-                    })}
+                        })}
+                    </ScrollView>
                 </View>
             )}
         </View>
@@ -200,10 +203,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 10,
+        justifyContent: 'center'
     },
     sectionTitle: {
+        paddingTop: 20,
         fontSize: 18,
-        color: '#fff'
+        color: '#fff',
+        fontFamily: 'Poppins_700Bold',
     },
     sectionScroll: {
         paddingBottom: 20,

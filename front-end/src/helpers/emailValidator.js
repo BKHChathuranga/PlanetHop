@@ -5,7 +5,6 @@ export function emailValidator(email) {
   for (let i = 0; i < (Object.keys(email).length - 1); i++) {
     createdEmail += email[i]
   }
-  console.log(createdEmail)
   if (!re.test(createdEmail)) return 'Ooops! We need a valid email address.'
   return ''
 }

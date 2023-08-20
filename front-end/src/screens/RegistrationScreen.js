@@ -14,6 +14,8 @@ import { UserRegister } from '../services/AuthService';
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 import { nameValidator, npnValidator } from '../helpers/inputValidator'
+import SnackBar from '../components/SnackBar';
+import { setAccessToken, setRefreshToken } from "../services/TokenService";
 
 const RegistrationScreen = ({ navigation }) => {
 
@@ -21,6 +23,9 @@ const RegistrationScreen = ({ navigation }) => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
+  const [errMsg, setErrMsg] = useState('');
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [fName, setFName] = useState({ value: '', error: '' });
   const [lName, setLName] = useState({ value: '', error: '' });
   const [npn, setNpn] = useState({ value: '', error: '' });
@@ -61,6 +66,7 @@ const RegistrationScreen = ({ navigation }) => {
     }
     else {
       try {
+        setIsLoading(true);
         const data = {
           firstName: fName,
           lastName: lName,
@@ -68,11 +74,26 @@ const RegistrationScreen = ({ navigation }) => {
           email: email,
           password: pwd.value
         }
-        const res = await UserRegister(data);
-        console.log('resssss', res)
-        console.log("valueee", data)
+        await UserRegister(data).then((res) => {
+          console.log(res.data.status)
+          if (res.data.status !== 400) {
+            navigation.navigate("home")
+          } else {
+            setErrMsg(res.data.message || "Something went wrong");
+            setSnackbarVisible(true);
+          }
+        });
+        const access_token = res.headers.get('access_token');
+        const refresh_token = res.headers.get('refresh_token');
+        setRefreshToken(refresh_token);
+        setAccessToken(access_token);
+        console.log(access_token, refresh_token)
       } catch (err) {
-        console.log("Error in registering")
+        console.log(err)
+        setErrMsg(res.data.message || "Something went wrong");
+        setSnackbarVisible(true);
+      } finally {
+        setIsLoading(false);
       }
     }
   }
@@ -123,6 +144,7 @@ const RegistrationScreen = ({ navigation }) => {
           </TouchableOpacity>
           </Text>
         </SafeAreaView>
+        <SnackBar snackbarVisible={snackbarVisible} setSnackbarVisible={setSnackbarVisible} displayMsg={errMsg} barColor='red' />
       </View>
     </ScrollView>
   )
