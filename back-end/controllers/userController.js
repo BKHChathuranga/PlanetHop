@@ -95,7 +95,7 @@ exports.generateAccessToken = async (req, res) => {
       decoded["_id"] = decoded.userId;
       delete decoded.userId;
       const accessToken = await accessTokenGenerator(decoded);
-      res.header("access-token", accessToken);
+      res.header("access_token", accessToken);
       return response.response(res, "Token generated successfully", null, 200);
     } catch (error) {
       logger.error("Error while generating token: ", error);
