@@ -20,6 +20,15 @@ const paymentSchema = new mongoose.Schema({
         required: true,
         enum: ['sent', 'not sent'],
         default: 'not sent'
+    },
+    from: {
+        type: String
+    },
+    to: {
+        type: String
+    },
+    cost: {
+        type: Number
     }
 });
 

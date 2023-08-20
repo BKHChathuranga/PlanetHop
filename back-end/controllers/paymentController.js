@@ -10,8 +10,6 @@ exports.createPayment = async (req, res) => {
         const { from, to, transportationMode, id, cost } = req.body;
         const user = await validateUser(id);
 
-        const totalAmount = cost * 100;
-
         const customer = await stripe.customers.create({ email: user.email });
 
         const session = await stripe.checkout.sessions.create({
@@ -21,7 +19,7 @@ exports.createPayment = async (req, res) => {
                 {
                     price_data: {
                         currency: 'usd',
-                        unit_amount: totalAmount,
+                        unit_amount: cost * 100,
                         product_data: {
                             name: 'Travelling Cost',
                             description: `Travel details: From ${from} to ${to} via ${transportationMode}.`,
@@ -39,7 +37,7 @@ exports.createPayment = async (req, res) => {
         response.response(res, "Payment link created successfully", session.url, 201);
 
         setTimeout(() => {
-            getResponse(session.id);
+            getResponse(session.id, from, to);
         }, 1 * 60 * 1000);
     } catch (error) {
         logger.error("Error while creating payment link", error);
@@ -47,12 +45,12 @@ exports.createPayment = async (req, res) => {
     }
 };
 
-const getResponse = async (sessionId) => {
+const getResponse = async (sessionId, from, to) => {
     try {
         const session = await stripe.checkout.sessions.retrieve(sessionId);
 
         if (session.payment_status === 'paid') {
-            await Payment.create({ email: session.customer_details.email, currency: session.currency, paymentStatus: session.payment_status });
+            await Payment.create({ email: session.customer_details.email, currency: session.currency, paymentStatus: session.payment_status, from: from, to: to, cost: session.amount_total / 100 });
             logger.info("Payment paid successfully");
         } else {
             logger.warn("Payment not paid");
