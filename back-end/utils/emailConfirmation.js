@@ -353,10 +353,10 @@ exports.sendConfirmationEmail = async (detail) => {
       </body>
       
       </html>
-      `
+      `,
     };
     return Promise.resolve(await transport.sendMail(message));
   } catch (error) {
-    return Promise.reject({ error: true, message: error.message});
+    return Promise.reject({ error: true, message: error.message });
   }
 };
