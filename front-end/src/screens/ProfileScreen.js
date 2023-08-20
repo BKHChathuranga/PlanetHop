@@ -1,6 +1,6 @@
 import React, { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Button } from 'react-native'
 import headerImage from '../../assets/profileHeader.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import BookingCard from '../components/bookingCard';
 import { ProfileMainTabs } from '../constants/ProfileMainTabs';
 import { ProfileStatusTabs } from '../constants/ProfileStatusTabs';
@@ -14,15 +14,18 @@ import {
 } from "@expo-google-fonts/poppins";
 import { useFonts } from "expo-font";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
     const [selectedMainHeader, setSelectedMainHeader] = useState('pi');
     const [selectedStatusHeader, setSelectedStatusHeader] = useState('upcoming');
     const [allBookings, setAllBookings] = useState([]);
 
+    useLayoutEffect(() => {
+        navigation.setOptions({ headerShown: false });
+    }, [navigation]);
+
     function getBookings() {
         GetAllBookings().then((res) => {
             setAllBookings(res.data);
-            console.log(res)
         }).catch((err) => {
             console.log(err.message)
         })
@@ -96,7 +99,12 @@ const ProfileScreen = () => {
                         {allBookings.data?.map(value => {
                             {
                                 if (value.status === selectedStatusHeader) {
-                                    return <BookingCard key={value._id} from={value.from} to={value.to} mode={value.transportationMode} date={value.date} time={value.departureTime} status={value.status} />
+                                    return (
+                                        <TouchableOpacity onPress={() => navigation.navigate("bookingDetail", value)}>
+
+                                            <BookingCard key={value._id} from={value.from} to={value.to} mode={value.transportationMode} date={value.date} time={value.departureTime} status={value.status} />
+                                        </TouchableOpacity>
+                                    )
                                 }
                             }
                         })}
