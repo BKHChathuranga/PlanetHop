@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import BookingScreen from '../screens/BookingScreen';
+import LoginScreen from '../screens/LoginScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,6 +52,11 @@ const Tabs = () => {
                 }
             })}
         >
+            {/* <Tab.Screen name="register" component={RegistrationScreen} options={{
+                tabBarItemStyle: { display: 'none' },
+                tabBarStyle: { display: 'none' },
+                headerShown: false,
+            }}></Tab.Screen> */}
             <Tab.Screen name="welcomeScreen" component={WelcomeScreen} options={{
                 tabBarItemStyle: { display: 'none' },
                 tabBarStyle: { display: 'none' }
@@ -86,6 +92,11 @@ const Tabs = () => {
                         }} />
                     </View>
                 ),
+            }}></Tab.Screen>
+            <Tab.Screen name="login" component={LoginScreen} options={{
+                tabBarItemStyle: { display: 'none' },
+                tabBarStyle: { display: 'none' },
+                headerShown: false,
             }}></Tab.Screen>
         </Tab.Navigator>
     )
