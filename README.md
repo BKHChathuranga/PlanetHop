@@ -1,6 +1,6 @@
-# Planetory Transportation Booking Application Backend
+# Planetory Transportation Booking Application
 
-Welcome to the Planetary Transportation Booking Application Backend! This backend serves as the server-side component for a booking application. It provides the necessary APIs and functionalities to handle booking-related operations with sign-in functionalities.
+Welcome to the Planetary Transportation Booking Application! This project consists of both the backend and frontend components that work together to create a comprehensive booking application tailored for planetary transportation. 
 
 ## Table of Contents
 
@@ -28,6 +28,33 @@ Welcome to the Planetary Transportation Booking Application Backend! This backen
 
 ## Frontend
 
+### Getting Started
+
+#### Prerequisites
+
+Before running the application, ensure you have the following prerequisites:
+
+- [Node.js](https://nodejs.org/) (version >= 14.0.0)
+- [npm](https://www.npmjs.com/) (Node Package Manager)
+- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) (for development)
+
+#### Installation
+
+1. Clone this repository to your local machine:
+```bash
+git clone https://github.com/BKHChathuranga/PlanetHop.git
+```
+2. Navigate to the project directory:
+```bash
+cd PlanetHop/front-end
+```
+3. Install the required dependencies:
+```bash
+npm install
+```
+
+==================================================================================================================================================================
+
 ## Backend
 
 ### Getting Started
@@ -47,7 +74,7 @@ git clone https://github.com/BKHChathuranga/PlanetHop.git
 ```
 2. Navigate to the project directory:
 ```bash
-cd PlanetHop
+cd PlanetHop/back-end
 ```
 3. Install the required dependencies:
 ```bash
