@@ -2,7 +2,6 @@ const Booking = require('../models/booking');
 const response = require('../utils/response');
 const logger = require('../utils/logger');
 const { validateUser } = require('../utils/validation');
-const { sendConfirmationEmail } = require('../utils/emailConfirmation');
 
 exports.createBooking = async (req, res) => {
     try {
@@ -74,13 +73,3 @@ exports.cancelBooking = async (req, res) => {
     }
 };
 
-exports.emailSend = async (req, res) => {
-    try {
-      let info = await sendConfirmationEmail();
-      logger.info("Email accepted: " + info.accepted);
-      return response.response(res, "sending email to " + info.accepted, info, 400);
-    } catch (error) {
-      logger.error("Error while sending email", error);
-      return response.response(res, "Error while sending email: " + error.message, null, 400);
-    }
-  };
