@@ -22,10 +22,8 @@ import { news } from "../constants/Screens/HomeScreen";
 import { useAuth } from '../contexts/AuthContext';
 
 
-export default function HomeScreen({navigation}) {
-const {userData} = useAuth();
-console.log(userData);
-
+export default function HomeScreen({ navigation }) {
+  const { userData } = useAuth();
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);

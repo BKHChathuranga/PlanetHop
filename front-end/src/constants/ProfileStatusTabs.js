@@ -9,7 +9,7 @@ export const ProfileStatusTabs = [
     },
     {
         key: 'ca',
-        Header: 'canceled'
+        Header: 'cancelled'
     }
 ]
 
