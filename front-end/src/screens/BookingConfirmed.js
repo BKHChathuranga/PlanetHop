@@ -1,9 +1,10 @@
-import React,{useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Image } from "expo-image";
 import { useFonts } from "expo-font";
 import {
   Poppins_800ExtraBold,
+  Poppins_700Bold,
   Poppins_500Medium,
 } from "@expo-google-fonts/poppins";
 
@@ -13,13 +14,14 @@ const HEIGHT = Dimensions.get("window").height;
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
-const BookingConfirmed = ({navigation}) => {
+const BookingConfirmed = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
   let [fontsLoaded] = useFonts({
     Poppins_800ExtraBold,
+    Poppins_700Bold,
     Poppins_500Medium,
   });
 
@@ -36,28 +38,28 @@ const BookingConfirmed = ({navigation}) => {
       />
       <Text style={styles.text}>Your Booking has been Confirmed !</Text>
       <View style={styles.imageContainer}>
-      <Image
-        style={styles.image2}
-        source={require("./../../assets/Curve.png")}
-        contentFit="fill"
-      />
+        <Image
+          style={styles.image2}
+          source={require("./../../assets/Curve.png")}
+          contentFit="fill"
+        />
       </View>
       <View style={styles.container2}>
-      <Text style={styles.fontStyle1}>SpaceX 19001</Text>
+        <Text style={styles.fontStyle1}>SpaceX 19001</Text>
         <View style={styles.row}>
-          <Text style={styles.fontStyle2}>Date&ensp;:</Text>
+          <Text style={styles.fontStyle2}>Date&ensp;&ensp;&ensp;:&ensp;</Text>
           <Text style={styles.fontStyle3}>August 22, 2165</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.fontStyle2}>Time&ensp;:</Text>
+          <Text style={styles.fontStyle2}>Time&ensp;&ensp;&ensp;:&ensp;</Text>
           <Text style={styles.fontStyle3}>18 : 30 Hrs</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.fontStyle2}>From&ensp;:</Text>
+          <Text style={styles.fontStyle2}>From&ensp;&ensp;&ensp;:&ensp;</Text>
           <Text style={styles.fontStyle3}>Earth</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.fontStyle2}>To&ensp;&ensp;&ensp;:</Text>
+          <Text style={styles.fontStyle2}>To&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;:&ensp;</Text>
           <Text style={styles.fontStyle3}>Saturn</Text>
         </View>
       </View>
@@ -90,20 +92,19 @@ const styles = StyleSheet.create({
     height: 162,
   },
   image2: {
-    width: WIDTH*1,
-    height: HEIGHT*0.6,
+    width: WIDTH * 1,
+    height: HEIGHT * 0.6,
   },
   text: {
+    fontFamily: "Poppins_700Bold",
     width: 326,
     color: "#FFF",
     textAlign: "center",
     fontSize: 32,
     fontStyle: "normal",
-    fontWeight: "800",
     lineHeight: 47,
     letterSpacing: -1.28,
-    paddingBottom: 25,
-    fontFamily: "Poppins_800ExtraBold"
+    paddingBottom: 25
   },
   container2: {
     paddingTop: 25,
@@ -133,15 +134,14 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 20,
     fontStyle: "normal",
-    fontWeight: "700",
     paddingLeft: 55,
+    fontFamily: "Poppins_500Medium",
   },
   fontStyle2: {
     paddingTop: 15,
     color: "#FFF",
     fontSize: 16,
     fontStyle: "normal",
-    fontWeight: "500",
     lineHeight: 17.5,
     fontFamily: "Poppins_500Medium",
   },
@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
     color: "#B36EFA",
     fontSize: 16,
     fontStyle: "normal",
-    fontWeight: "700",
     lineHeight: 17.5,
     fontFamily: "Poppins_500Medium"
   },
@@ -158,15 +157,15 @@ const styles = StyleSheet.create({
     padding: 40
   },
   appButtonContainer: {
-    justifyContent:"center",
+    justifyContent: "center",
     elevation: 8,
     backgroundColor: "#791AF6",
     borderRadius: 16,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    marginBottom:50,
+    marginBottom: 50,
     width: 188,
-    height:56
+    height: 56
   },
   appButtonText: {
     fontSize: 22,

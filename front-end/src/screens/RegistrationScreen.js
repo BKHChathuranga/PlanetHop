@@ -10,18 +10,28 @@ import { useFonts } from "expo-font";
 import React, { useState, useLayoutEffect } from 'react';
 import Checkbox from 'expo-checkbox';
 import SocialLoginButton from '../components/SocialLoginButton';
+import { UserRegister } from '../services/AuthService';
+import { emailValidator } from '../helpers/emailValidator'
+import { passwordValidator } from '../helpers/passwordValidator'
+import { nameValidator, npnValidator } from '../helpers/inputValidator'
+import SnackBar from '../components/SnackBar';
+import { setAccessToken, setRefreshToken } from "../services/TokenService";
 
-const RegistrationScreen = ({navigation}) => {
+const RegistrationScreen = ({ navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
-  
-  const [name, setName] = useState("");
-  const [npn, setNpn] = useState("");
-  const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [cpwd, setCpwd] = useState("");
+
+  const [errMsg, setErrMsg] = useState('');
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fName, setFName] = useState({ value: '', error: '' });
+  const [lName, setLName] = useState({ value: '', error: '' });
+  const [npn, setNpn] = useState({ value: '', error: '' });
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [pwd, setPwd] = useState({ value: '', error: '' });
+  const [cpwd, setCpwd] = useState({ value: '', error: '' });
   const [isChecked, setChecked] = useState(false);
 
   let [fontsLoaded] = useFonts({
@@ -31,6 +41,61 @@ const RegistrationScreen = ({navigation}) => {
 
   if (!fontsLoaded) {
     return null;
+  }
+
+  const handleRegister = async () => {
+
+    const fNameValidator = nameValidator(fName.value)
+    const lNameValidator = nameValidator(lName.value)
+    const emailError = emailValidator(email)
+    const npnError = npnValidator(npn)
+    const passwordError = passwordValidator(pwd.value)
+
+    if (fNameValidator || lNameValidator || emailError || npnError || passwordError) {
+      setFName({ ...fName, error: fNameValidator })
+      setLName({ ...lName, error: lNameValidator })
+      setEmail({ ...email, error: emailError })
+      setNpn({ ...npn, error: npnError })
+      setPwd({ ...pwd, error: passwordError })
+      return ''
+    }
+    else if (pwd.value !== cpwd.value) {
+      const confirmPasswordError = "Passwords do not match"
+      setCpwd({ ...cpwd, error: confirmPasswordError })
+      return ''
+    }
+    else {
+      try {
+        setIsLoading(true);
+        const data = {
+          firstName: fName,
+          lastName: lName,
+          npn: npn,
+          email: email,
+          password: pwd.value
+        }
+        await UserRegister(data).then((res) => {
+          console.log(res.data.status)
+          if (res.data.status !== 400) {
+            navigation.navigate("home")
+          } else {
+            setErrMsg(res.data.message || "Something went wrong");
+            setSnackbarVisible(true);
+          }
+        });
+        const access_token = res.headers.get('access_token');
+        const refresh_token = res.headers.get('refresh_token');
+        setRefreshToken(refresh_token);
+        setAccessToken(access_token);
+        console.log(access_token, refresh_token)
+      } catch (err) {
+        console.log(err)
+        setErrMsg(res.data.message || "Something went wrong");
+        setSnackbarVisible(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   }
 
   return (
@@ -44,18 +109,19 @@ const RegistrationScreen = ({navigation}) => {
               Fill Your Information Below or Register {"\n"} with your Social accounts
             </Text>
           </View>
-          <Inputbox label={"Name"} placeholder={"Name"} secureTextEntry={false} IconName={"user"} style={{ flex: 1 }} setInput={setName} />
-          <Inputbox label={"National Planetary Number (NPN)"} placeholder={"npn"} secureTextEntry={false} IconName={"idcard"} style={{ flex: 1 }} setInput={setNpn} />
-          <Inputbox label={"Email"} placeholder={"Email"} secureTextEntry={false} IconName={"mail"} style={{ flex: 1 }} setInput={setEmail} />
-          <Inputbox label={"Password"} placeholder={"Password"} secureTextEntry={true} IconName={"lock"} style={{ flex: 1 }} setInput={setPwd} />
-          <Inputbox label={"Confirm Password"} placeholder={"Confirm Password"} secureTextEntry={true} IconName={"lock"} style={{ flex: 1 }} setInput={setCpwd} />
+          <Inputbox label={"First Name"} placeholder={"First Name"} secureTextEntry={false} IconName={"user"} input={fName.value} style={{ flex: 1 }} setInput={setFName} error={!!fName.error} errorText={fName.error} />
+          <Inputbox label={"Last Name"} placeholder={"Last Name"} secureTextEntry={false} IconName={"user"} input={lName.value} style={{ flex: 1 }} setInput={setLName} error={!!lName.error} errorText={lName.error} />
+          <Inputbox label={"National Planetary Number (NPN)"} placeholder={"npn"} secureTextEntry={false} IconName={"idcard"} input={npn.value} style={{ flex: 1 }} setInput={setNpn} error={!!npn.error} errorText={npn.error} />
+          <Inputbox label={"Email"} placeholder={"Email"} secureTextEntry={false} IconName={"mail"} input={email.value} style={{ flex: 1 }} setInput={setEmail} error={!!email.error} errorText={email.error} />
+          <Inputbox label={"Password"} placeholder={"Password"} secureTextEntry={true} IconName={"lock"} input={pwd.value} style={{ flex: 1 }} setInput={setPwd} error={!!pwd.error} errorText={pwd.error} />
+          <Inputbox label={"Confirm Password"} placeholder={"Confirm Password"} secureTextEntry={true} IconName={"lock"} input={cpwd.value} style={{ flex: 1 }} setInput={setCpwd} error={!!cpwd.error} errorText={cpwd.error} />
           <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 30 }}>
             <Checkbox style={styles.checkbox} value={isChecked} onValueChange={setChecked} color={'#B36EFA'} />
             <Text style={styles.paragraph}>Agree with <Text style={{ color: '#B36EFA', fontFamily: 'Poppins_800ExtraBold', textDecorationLine: 'underline' }}>Terms & Condition</Text></Text>
           </View>
           <TouchableOpacity
             style={styles.appButtonContainer}
-            onPress={() => navigation.navigate("home")}
+            onPress={handleRegister}
           >
             <Text style={styles.appButtonText}>Create Account</Text>
           </TouchableOpacity>
@@ -72,12 +138,13 @@ const RegistrationScreen = ({navigation}) => {
             <SocialLoginButton name='instagram' />
           </View>
           <Text style={[{ alignSelf: 'center' }, styles.paragraph]}>Already have an account?  <TouchableOpacity
-              onPress={() => navigation.navigate("login")}
-            >
-              <Text style={{ color: '#B36EFA', fontFamily: 'Poppins_800ExtraBold', textDecorationLine: 'underline' }}>Sign In</Text>
-            </TouchableOpacity>
+            onPress={() => navigation.navigate("login")}
+          >
+            <Text style={{ color: '#B36EFA', fontFamily: 'Poppins_800ExtraBold', textDecorationLine: 'underline' }}>Sign In</Text>
+          </TouchableOpacity>
           </Text>
         </SafeAreaView>
+        <SnackBar snackbarVisible={snackbarVisible} setSnackbarVisible={setSnackbarVisible} displayMsg={errMsg} barColor='red' />
       </View>
     </ScrollView>
   )

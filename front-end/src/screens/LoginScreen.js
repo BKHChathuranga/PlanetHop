@@ -17,7 +17,7 @@ import {
 import { useFonts } from "expo-font";
 import React, { useState, useLayoutEffect } from "react";
 import { setAccessToken, setRefreshToken } from "../services/TokenService";
-import { login } from "../services/UserServices";
+import { UserLogin } from "../services/AuthService";
 import SocialLoginButton from "../components/SocialLoginButton";
 import SnackBar from '../components/SnackBar';
 
@@ -57,11 +57,18 @@ const LoginScreen = ({ navigation }) => {
         password: password,
       };
 
-      const res = await login(data);
-      const  access_token= res.headers.get('access_token');
-      const  refresh_token= res.headers.get('refresh_token');
-      setRefreshToken(refresh_token);
-      setAccessToken(access_token);
+      await UserLogin(data).then((res) => {
+        if (res.data.status !== 400) {
+          navigation.navigate("home")
+          const access_token = res.headers.get('access_token');
+          const refresh_token = res.headers.get('refresh_token');
+          setRefreshToken(refresh_token);
+          setAccessToken(access_token);
+        } else {
+          setErrMsg(res.data.message || "Something went wrong");
+          setSnackbarVisible(true);
+        }
+      });
     } catch (err) {
       setErrMsg(err.response?.data?.msg || "Something went wrong");
       setSnackbarVisible(true);
@@ -77,7 +84,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
-        <ImageBackground source={require("../../assets/BackgroundImage.png")}>
+        <ImageBackground source={require("../../assets/BackgroundImage.png")} style={styles.backgroundImage}>
           <SafeAreaView>
             <StatusBar style="light" />
             <View style={styles.header}>
@@ -242,6 +249,10 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "bold",
     alignSelf: "center",
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
   },
 });
 
