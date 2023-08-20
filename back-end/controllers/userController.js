@@ -76,8 +76,8 @@ exports.userLogin = async ({ body: { email, password } }, res) => {
     res.header("access_token", accessToken);
     res.header("refresh_token", refreshToken);
 
-    logger.info("Login Successfull");
-    return response.response(res, "Login Successfull", null, 200);
+    logger.info("Login Successful");
+    return response.response(res, "Login Successful", null, 200);
   } catch (error) {
     logger.error("Error while logging in user: ", error);
     return response.response(res, 'Error while logging in user', null, 400);
@@ -95,7 +95,7 @@ exports.generateAccessToken = async (req, res) => {
       decoded["_id"] = decoded.userId;
       delete decoded.userId;
       const accessToken = await accessTokenGenerator(decoded);
-      res.header("acceses-token", accessToken);
+      res.header("access-token", accessToken);
       return response.response(res, "Token generated successfully", null, 200);
     } catch (error) {
       logger.error("Error while generating token: ", error);
@@ -116,7 +116,7 @@ exports.userLogout = async (req, res) => {
       const token = req.headers.authorization.split(" ")[1];
       const decoded = await verifyRefreshToken(token);
       await RefreshToken.deleteOne({ userId: decoded.userId });
-      return response.response(res, "Logout Successfull", null, 200);
+      return response.response(res, "Logout Successful", null, 200);
     } catch (error) {
       logger.error("Error while logout: ", error);
       return response.response(res, error.message, null, 400);

@@ -76,3 +76,14 @@ exports.cancelBooking = async (req, res) => {
     }
 };
 
+exports.getAllBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find({});
+
+        logger.info('Bookings fetched successfully');
+        return response.response(res, 'Bookings fetched successfully', bookings, 200);
+    } catch (error) {
+        logger.error('Error while fetching bookings', error);
+        return response.response(res, 'Error while fetching bookings', null, 400);
+    }
+};
