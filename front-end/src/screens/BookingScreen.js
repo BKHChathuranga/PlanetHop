@@ -47,31 +47,38 @@ const BookingScreen = ({ navigation }) => {
     const data = {
       departureTime: new Date(`${year}-${month}-${day}`).toISOString(),
       totalPrice: calculatePrice(),
-      transportationMode: modes.find(x => x._id == mode).name,
-      from: locations.find(x => x._id == currentLocation).name,
-      to: locations.find(x => x._id == destination).name,
-      status: 'completed'
-    }
+      transportationMode: modes.find((x) => x._id == mode).name,
+      from: locations.find((x) => x._id == currentLocation).name,
+      to: locations.find((x) => x._id == destination).name,
+      status: "completed",
+    };
 
-    booking(data).then(res => {
-      navigation.navigate({name : "BookingConfirmed"})
-      setCurrentLocation("")
-      setDestination(""),
-      setDay(1)
-      setMonth(1)
-      setYear(2160)
-      setMode("")
-    }).catch(err => {
-      console.log(err)
-    })
-  }
+    booking(data)
+      .then((res) => {
+        navigation.navigate("BookingConfirmed", {
+          mode: modes.find((x) => x._id == mode).name,
+          to: locations.find((x) => x._id == destination).name,
+          from: locations.find((x) => x._id == currentLocation).name,
+          date: new Date(`${year}-${month}-${day}`).toDateString(),
+          price : calculatePrice()
+        });
+        setCurrentLocation("");
+        setDestination(""), setDay(1);
+        setMonth(1);
+        setYear(2160);
+        setMode("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const calculatePrice = () => {
-    let price,distance;
-    distance = Math.abs(locations.find(x => x._id == currentLocation).distanceFromSun - locations.find(x => x._id == destination).distanceFromSun)
-    price  = distance * modes.find(x => x._id == mode).pricePerKm
-    return price
-  }
+    let price, distance;
+    distance = Math.abs(locations.find((x) => x._id == currentLocation).distanceFromSun - locations.find((x) => x._id == destination).distanceFromSun);
+    price = distance * modes.find((x) => x._id == mode).pricePerKm;
+    return price;
+  };
 
   return (
     <View style={{ ...styles.container, paddingTop: insets.top, paddingBottom: insets.bottom }}>
@@ -104,7 +111,7 @@ const BookingScreen = ({ navigation }) => {
             </View>
           </View>
           {currentLocation != 0 && (
-            <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-end"}}>
+            <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
               <TouchableOpacity style={styles.exploreBtn}>
                 <Text style={styles.exploreText}>{`Explore ${locations.find((x) => x._id == currentLocation).name}`}</Text>
               </TouchableOpacity>
@@ -171,22 +178,42 @@ const BookingScreen = ({ navigation }) => {
             </View>
           </View>
         </View>
-        {
-          (currentLocation != 0 || currentLocation != "") &&  (destination != 0 || destination != "") && (mode != 0 || mode != "") && (
-            
-          <SearchOptionInfo bullets={
-            destination == planetIds.Jupiter? planetDetails.jupiter.bullets : destination == planetIds.Neptune?  planetDetails.neptune.bullets : destination == planetIds.Saturn? planetDetails.saturn.bullets : destination == planetIds.Uranus? planetDetails.uranus.bullets: <></>
-          } desc={
-            destination == planetIds.Jupiter? planetDetails.jupiter.desc : destination == planetIds.Neptune?  planetDetails.neptune.desc : destination == planetIds.Saturn? planetDetails.saturn.desc : destination == planetIds.Uranus? planetDetails.uranus.desc: <></>
-          } price={calculatePrice()} />
-          )
-        }
-        
+        {(currentLocation != 0 || currentLocation != "") && (destination != 0 || destination != "") && (mode != 0 || mode != "") && (
+          <SearchOptionInfo
+            bullets={
+              destination == planetIds.Jupiter ? (
+                planetDetails.jupiter.bullets
+              ) : destination == planetIds.Neptune ? (
+                planetDetails.neptune.bullets
+              ) : destination == planetIds.Saturn ? (
+                planetDetails.saturn.bullets
+              ) : destination == planetIds.Uranus ? (
+                planetDetails.uranus.bullets
+              ) : (
+                <></>
+              )
+            }
+            desc={
+              destination == planetIds.Jupiter ? (
+                planetDetails.jupiter.desc
+              ) : destination == planetIds.Neptune ? (
+                planetDetails.neptune.desc
+              ) : destination == planetIds.Saturn ? (
+                planetDetails.saturn.desc
+              ) : destination == planetIds.Uranus ? (
+                planetDetails.uranus.desc
+              ) : (
+                <></>
+              )
+            }
+            price={calculatePrice()}
+          />
+        )}
       </ScrollView>
       <TouchableOpacity
         style={!(mode != 0 && destination != 0 && currentLocation != 0) ? styles.bookBtnDisabled : styles.bookBtnActive}
         disabled={mode != 0 && destination != 0 && currentLocation != 0 ? false : true}
-        onPress={_ => book()}
+        onPress={(_) => book()}
       >
         <Text style={!(mode != 0 && destination != 0 && currentLocation != 0) ? styles.bookTextDisabled : styles.bookTextActive}>Book the Trip</Text>
       </TouchableOpacity>
@@ -281,7 +308,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingHorizontal: 20,
     borderRadius: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   inputGroup: {
     paddingHorizontal: 15,
@@ -298,6 +325,6 @@ const styles = StyleSheet.create({
     color: "#FFFEFE",
     textAlign: "center",
     fontFamily: "Poppins_400Regular",
-    fontSize: 12
+    fontSize: 12,
   },
 });
