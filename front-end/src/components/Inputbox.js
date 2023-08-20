@@ -33,7 +33,7 @@ const Inputbox = ({ label, placeholder, secureTextEntry, IconName, input, setInp
                             style={styles.input}
                             secureTextEntry={passwordVisibility}
                             autoCorrect={false}
-                            onChangeText={(inp) => setInput(inp)}
+                            onChangeText={(inp) => setInput({ value: inp, error: '' })}
                             value={input}
                             editable={canEdit == null ? true : canEdit}
                         />
